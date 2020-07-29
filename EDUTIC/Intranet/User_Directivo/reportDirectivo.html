@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>EduTic</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="Shortcut Icon" type="image/x-icon" href="../assets/img/logolobo.png" />
+    <script src="../js/sweet-alert.min.js"></script>
+    <link rel="stylesheet" href="../css/sweet-alert.css">
+    <link rel="stylesheet" href="../css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="../js/modernizr.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+    <div class="navbar-lateral full-reset">
+        <div class="visible-xs font-movile-menu mobile-menu-button"></div>
+        <div class="full-reset container-menu-movile custom-scroll-containers">
+            <div class="logo full-reset all-tittles">
+                <i class="visible-xs zmdi zmdi-close pull-left mobile-menu-button" style="line-height: 55px; cursor: pointer; padding: 0 10px; margin-left: 7px;"></i> 
+                EduTic
+            </div>
+            <div class="full-reset" style="background-color:#2B3D51; padding: 10px 0; color:#fff;">
+                <figure>
+                    <img src="../assets/img/logo.png" alt="Biblioteca" class="img-responsive center-box" style="width:55%;">
+                </figure>
+                <p class="text-center" style="padding-top: 15px;">Unidad Educativa "Oswaldo Guayasamin"</p>
+            </div>
+            <div class="full-reset nav-lateral-list-menu">
+                <ul class="list-unstyled">
+                    <li><a href="./userDirectivo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Inicio</a></li>
+                    <li><a href="./reportDirectivo.html"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes y estadísticas</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                   <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li style="color:#fff; cursor:default;">
+                    <span class="all-tittles">Directivo</span>
+                </li>
+                <li  class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom" title="Salir del sistema">
+                    <i class="zmdi zmdi-power"></i>
+                </li>
+                <li  class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+              <h1 class="all-tittles">EduTic <small>Reportes y estadísticas</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li role="presentation" class="active"><a href="#statistics" aria-controls="statistics" role="tab" data-toggle="tab">Estadísticas</a></li>
+                <li role="presentation"><a href="#reports" aria-controls="reports" role="tab" data-toggle="tab">Reportes y fichas</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="statistics">
+                    <div class="container-fluid"  style="margin: 50px 0;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <img src="../assets/img/chart.png" alt="chart" class="img-responsive center-box" style="max-width: 120px;">
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                                Bienvenido al área de estadísticas, aquí puedes ver las diferentes estadísticas del personal administrativo, docentes y alumnos.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="page-header">
+                          <h2 class="all-tittles">Personal Administrativo <small>en general</small></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">Total Personal Administrativo</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">Area</th>
+                                                <th class="text-center">Número</th>
+                                                <th class="text-center">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Directiva</td>
+                                                <td>4</td>
+                                                <td>3.33%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Financiera</td>
+                                                <td>40</td>
+                                                <td>33.33%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Disciplinaria</td>
+                                                <td>41</td>
+                                                <td>34.16%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Limpieza</td>
+                                                <td>35</td>
+                                                <td>29.16%</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="info">
+                                                <th class="text-center">Total</th>
+                                                <th class="text-center">124</th>
+                                                <th class="text-center">100%</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <p class="lead text-center"><strong><i class="zmdi zmdi-info-outline"></i>&nbsp; ¡Importante!</strong> Para imprimir esta tabla ve a la sección de reportes y selecciona “Total Personal Administrativo”</p>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="container-fluid">
+                        <div class="page-header">
+                          <h2 class="all-tittles">Personal Docente <small>en general</small></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">Total Docentes</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">Asignatura</th>
+                                                <th class="text-center">Número</th>
+                                                <th class="text-center">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Sociales</td>
+                                                <td>65</td>
+                                                <td>25.69%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Naturales</td>
+                                                <td>60</td>
+                                                <td>23.71%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Matemáticas</td>
+                                                <td>70</td>
+                                                <td>27.67%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lenguaje</td>
+                                                <td>58</td>
+                                                <td>22.92%</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="info">
+                                                <th class="text-center">Total</th>
+                                                <th class="text-center">253</th>
+                                                <th class="text-center">100%</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <p class="lead text-center"><strong><i class="zmdi zmdi-info-outline"></i>&nbsp; ¡Importante!</strong> Para imprimir esta tabla ve a la sección de reportes y selecciona “Total Docentes”</p>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="container-fluid">
+                        <div class="page-header">
+                          <h2 class="all-tittles">Alumnos <small>en general</small></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">Total Alumnos </h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">Nivel</th>
+                                                <th class="text-center">Número</th>
+                                                <th class="text-center">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Jardin</td>
+                                                <td>311</td>
+                                                <td>25.24%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Escuela</td>
+                                                <td>411</td>
+                                                <td>33.36%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Colegio</td>
+                                                <td>510</td>
+                                                <td>41.39%</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="info">
+                                                <th class="text-center">Total</th>
+                                                <th class="text-center">1.232</th>
+                                                <th class="text-center">100%</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <p class="lead text-center"><strong><i class="zmdi zmdi-info-outline"></i>&nbsp; ¡Importante!</strong> Para imprimir esta tabla ve a la sección de reportes y selecciona “Total Alumnos”</p>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+                
+                <div role="tabpanel" class="tab-pane fade" id="reports">
+                    <div class="container-fluid"  style="margin: 50px 0;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <img src="../assets/img/pdf.png" alt="pdf" class="img-responsive center-box" style="max-width: 120px;">
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                                Bienvenido al área de reportes, aquí puedes generar fichas de estudiantes, docentes o personal administrativo en formato pdf.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="page-header">
+                              <h2 class="all-tittles">fichas </h2>
+                            </div><br>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-file-text zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Ficha estudiante</h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-file-text zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Ficha docente</h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-file-text zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Ficha personal administrativo</h3>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="page-header">
+                              <h2 class="all-tittles">reportes <small>generales</small></h2>
+                            </div><br>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Reporte Personal Administrativo</h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Reporte Docentes </h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Reporte Alumnos</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                  </div>
+                  <div class="modal-body">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer full-reset">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-xs-12 col-sm-6">
+                          <h4 class="all-tittles">Acerca de</h4>
+                          <p>
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam quam dicta et, ipsum quo. Est saepe deserunt, adipisci eos id cum, ducimus rem, dolores enim laudantium eum repudiandae temporibus sapiente.
+                          </p>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <h4 class="all-tittles">Desarrollado por:</h4>
+                          <ul class="list-unstyled">
+                              <li><i class="zmdi zmdi-check zmdi-hc-fw"></i>&nbsp; EspeSoft <i class="zmdi zmdi-facebook zmdi-hc-fw footer-social"></i><i class="zmdi zmdi-twitter zmdi-hc-fw footer-social"></i></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="footer-copyright full-reset all-tittles">© 2020 EspeSoft</div>
+          </footer>
+      </div>
+  </body>
+  </html>

@@ -1,3 +1,47 @@
+<?php 
+    include '../services/PersonaServicios.php';
+    $persona = new PersonaServicios();
+    $sede="sede";
+    $edificio="edificio";
+    $aula="aula";
+    $codigoAula = "";
+    $nombreAula="";
+    $capacidadAula="";
+    $pisoAula="";
+    $accion="Añadir";
+    $mensaje="Registro de Nueva Aula";
+    
+    //Personas
+    if(isset($_POST['accionPersona']) && ($_POST['accionPersona']=='Añadir'))
+    {
+        $persona->insertarPersona($_POST['codigo_edificio'],$_POST['sede'],$_POST['nombre_edificio'],$_POST['pisos']);
+    }
+
+    else if(isset($_POST["accionAula"]) && ($_POST["accionAula"]=="Modificar"))
+    {
+        $persona->modificarAula($_POST['codigo_aula'],$_POST['edificio'],$_POST['nombre_aula'],
+                                        $_POST['capacidad_aula'],$_POST['tipo_aula'],$_POST['piso_aula']);
+    }
+    else if(isset($_GET["modificarAula"]))
+    {
+        $result = $persona->encontrarAula($_GET['modificarAula']);
+        if($result!=null)
+        {
+            $codigoAula = $result['COD_AULA'];
+            $nombreAula = $result['NOMBRE'];
+            $capacidadAula = $result['CAPACIDAD'];
+            $pisoAula = $result['PISO'];
+            $mensaje="Modificar Aula";
+            $accion="Modificar";
+        }
+    }
+    else if(isset($_GET['eliminarAula']))
+    {
+        $persona->eliminarAula($_GET['eliminarAula']);
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

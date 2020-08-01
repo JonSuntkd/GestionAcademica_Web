@@ -9,7 +9,7 @@ class PersonaServicios extends MainService
         return $this->conexion->query("SELECT * FROM ".$nombreEntidad);
     }
 
-
+    
     //PERSONAL (Administrativo, Directivo, Docente)
     function añadirPersonal($cedula,$apellido,$nombre,$direccion,$telefono,$fecha_nacimiento,$genero,$correo,$correo_personal)
     {

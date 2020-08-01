@@ -1,3 +1,41 @@
+<?php
+    include '../services/AsignaturaServicios.php';
+    $asignatura = new AsignaturaServicios();
+    $nivel="BAI";
+    $mensaje = "Añadir Nueva asignatura";
+    $accion = "Añadir";
+    $codigoAsignatura = "";
+    $nombreAsignatura = "";
+    $creditosAsignatura = "";
+
+    if(isset($_POST['accionAsignatura']) && ($_POST['accionAsignatura']=='Añadir'))
+    {
+        $asignatura->insertarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
+                                        $_POST['creditos_asignatura'],$_POST['tipo_asignatura']);
+    }
+    else if(isset($_POST["accionAsignatura"]) && ($_POST["accionAsignatura"]=="Modificar"))
+    {
+        $asignatura->modificarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
+                            $_POST['creditos_asignatura'],$_POST['tipo_asignatura'],$_POST['codigo_asignatura_comparar']);
+    }
+    else if(isset($_GET["modificarAsignatura"]))
+    {
+        $result = $asignatura->encontrarAsignatura($_GET['modificarAsignatura']);
+        if($result!=null)
+        {
+            $codigoAsignatura = $result['COD_ASIGNATURA'];
+            $nombreAsignatura = $result['NOMBRE'];
+            $creditosAsignatura = $result['CREDITOS'];
+            $mensaje="Modificar Asignatura";
+            $accion="Modificar";
+        }
+    }
+    else if(isset($_GET['eliminarAsignatura']))
+    {
+        $asignatura->eliminarAsignatura($nivel,$_GET['eliminarAsignatura']);
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -42,33 +80,13 @@
                     <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos
-                            Institución <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./institutionAdministrativo.html"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;
-                                    Gestion Sede</a></li>
-                            <li><a href="./GestionEdificios.html"><i class="zmdi zmdi-star-circle"></i>&nbsp;&nbsp;
-                                    Gestion edificios</a></li>
-                            <li><a href="./GestionAulas.html"><i class="zmdi zmdi-pin-account"></i>&nbsp;&nbsp; Gestion
-                                    aulas</a></li>
-                        </ul>
+                        <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
                     </li>
-
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Organizacion Academica <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./AnioElectivo.html"><i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp; Año
-                                    lectivo</a></li>
-                            <li><a href="./AsignacionAsignaturas.html"><i
-                                        class="zmdi zmdi-male-alt zmdi-hc-fw"></i>&nbsp;&nbsp; Asignación de
-                                    asignaturas</a></li>
-                        </ul>
+                        <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
                     </li>
                     <li>
                         <!------------------------------------ Periodo ---------------------------->
-
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Periodo <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
                         <ul class="list-unstyled">
@@ -110,6 +128,7 @@
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
+
                 <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
                     <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
                 </li>
@@ -123,12 +142,6 @@
                 <h1 class="all-tittles">EduTic <small>Gestión asignaturas</small></h1>
             </div>
         </div>
-        <div class="conteiner-fluid">
-            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
-                <li role="presentation"><a href="./AnioElectivo.html">Año lectivo</a></li>
-                <li role="presentation" class="active"><a href="./AsignacionAsignaturas.html">Asignatura</a></li>
-            </ul>
-        </div>
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -136,9 +149,11 @@
                         style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Bienvenido a la sección para registrar nuevas asignaturas. Para registrar una nueva asignatura debes
-                    de llenar todos los campos del siguiente formulario, también puedes ver el listado de la asignatura
-                    registrados
+                    Bienvenido a la sección donde se encuentra el listado de asignaturas para el nivel básico inicial registrados en el sistema,
+                    puedes actualizar algunos datos de las asignaturas o eliminar el registro completo de la asignatura
+                    siempre.<br>
+                    <strong class="text-danger"><i class="zmdi zmdi-alert-triangle"></i> &nbsp; ¡Importante! </strong>Si
+                    eliminas la asignatura del sistema se borrarán todos los datos relacionados con él.
                 </div>
             </div>
         </div>
@@ -146,90 +161,124 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Nueva Asignatura</li>
-                        <li><a href="./ListaAsignaturas.html">Listado de asignatura</a></li>
+                        <li><a href="./GestionAsignaturasInicial.php">Educación Inicial</a></li>
+                        <li class="active">Educación Básica Inicial</li>
+                        <li><a href="./GestionAsignaturasSuperior.php">Educación Básica Superior</a></li>
+                        <li><a href="./GestionAsignaturasBachillerato.php">Educación de Bachillerato</a></li>
                     </ol>
                 </div>
             </div>
         </div>
+        <!--GESTION ASIGNATURAS EDUCACION INICIAL-->
         <div class="container-fluid">
             <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Registrar una nueva asignatura</div>
-                <form autocomplete="off">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                <div class="title-flat-form title-flat-blue">
+                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;">Asignaturas para Educación Básica Inicial (1ero a 7mo de básica</a>
+                </div>
+                <form id="edificios" name="edificios" id="edificios" method="post">
+                    <div class="row container-flat-form">
+                        <div class="table-responsive">
+                            <table id="tablaEdificios" class="table-striped table-bordered table-condensed" style="width: 100%;">
+                               <thead class="text-center">
+                                    <tr>
+                                        <th>Código de la Asignatura</th>
+                                        <th>Nombre</th>
+                                        <th>Horas Semanales</th>
+                                        <th>Tipo</th>
+                                        <th>Actualizar</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                    <?php
+                                        $result = $asignatura->mostrarAsignaturas($nivel);
+                                        if($result->num_rows>0)
+                                        {
+                                            while($row = $result->fetch_assoc())
+                                            {     
+                                    ?>
+                                    <tr>
+                                        <!--DATOS DE LA TABLA EDIFICIOS-->
+                                        <td><?php echo $row ["COD_ASIGNATURA"];?></td>
+                                        <td><?php echo $row ["NOMBRE"];?></td>
+                                        <td><?php echo $row ["CREDITOS"];?></td>
+                                        <td><?php echo $row ["TIPO"];?></td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionAsignaturasBasica.php?modificarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-success" type="button">
+                                                    <i class="zmdi zmdi-refresh"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionAsignaturasBasica.php?eliminarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-danger" role="button">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php   } 
+                                        } 
+                                        else
+                                        {
+                                    ?>
+                                    <tr>
+                                        <td>No hay datos en la tabla</td>
+                                    </tr>        
+                                    <?php } ?>
+                                </tbody> 
+                            </table>
+                        </div><br>
+                        <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="asignaturasForm">
+                            <input type="hidden" name="codigo_asignatura_comparar" value="<?php echo $codigoAsignatura ?>">
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
-                                    placeholder="Escribe aquí codigo de la asignatura ejemplo: 1234"
-                                    pattern="[0-9-]{1,10}" required="" maxlength="4" data-toggle="tooltip"
-                                    data-placement="top" title="Solamente números, 4 dígitos">
+                                    placeholder="Código de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Escriba el código de la Asignatura" name="codigo_asignatura" value="<?php echo $codigoAsignatura ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Código</label>
+                                <label>Código de la Asignatura</label>
                             </div>
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
-                                    placeholder="Escribe aquí los nombres del docente"
-                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,50}" required="" maxlength="50"
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Escribe los nombres del docente, solamente letras">
+                                    placeholder="Nombre de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Escriba el nombre de la Asignatura" name="nombre_asignatura" value="<?php echo $nombreAsignatura ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Nombre de la asignatura</label>
+                                <label>Nombre de la Asignatura</label>
                             </div>
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
-                                    placeholder="Escribe aquí el nombre de la descripción asignatura"
-                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,50}" required="" maxlength="50"
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Escribe los apellidos del docente, solamente letras">
+                                    placeholder="Créditos de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Escriba los créditos de la Asignatura" name="creditos_asignatura" value="<?php echo $creditosAsignatura ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Descripción de la asignatura.</label>
-                            </div>
+                                <label>Créditos de la Asignatura</label>
+                            </div> 
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general"
-                                    placeholder="Escribe aquí el número de horas de la asignatura" pattern="[0-9]{1,10}"
-                                    required="" maxlength="2" data-toggle="tooltip" data-placement="top"
-                                    title="Solamente 2 digitos">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Horas</label>
-                            </div>
-
-                            <div class="group-material">
-                                <span>Días</span>
-                                <br><br><input type="checkbox" name="transporte" value="1"> Lunes<br>
-                                <input type="checkbox" name="transporte" value="2" checked> Martes<br>
-                                <input type="checkbox" name="transporte" value="3"> Miercoles<br>
-                                <input type="checkbox" name="transporte" value="3"> Jueves<br>
-                                <input type="checkbox" name="transporte" value="3"> Viernes<br>
-                            </div>
-
-                            <div class="group-material">
-                                <span style="color: #E34724;">Docente</span>
-                                <select class="material-control tooltips-general" data-toggle="tooltip"
-                                    data-placement="top" title="Elige la sección encargada del docente">
-                                    <option value="" disabled="" selected="">Selecciona un docente</option>
-                                    <option value="Seccion">Luis Ponce</option>
-                                    <option value="Seccion">Arturo de la Torre</option>
-                                    <option value="Seccion">Fernando Solis</option>
+                                <span style="color: #E34724;">Tipo de Asignatura</span>
+                                <select name="tipo_asignatura" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Elige el tipo de asignatura">
+                                    <option value="" disabled="" selected="">Selecciona una opción</option>
+                                    <option value="MIN">Ministerial</option>
+                                    <option value="PRO">Institucional</option>
+                                    <option value="OTR">Otra</option>
                                 </select>
                             </div>
-
-
-
                             <p class="text-center">
+                                <input type="submit" name="accionAsignatura" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
                                         class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>
-                                    &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
+
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -271,7 +320,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright full-reset all-tittles">© 2020 EspeSoft </div>
+            <div class="footer-copyright full-reset all-tittles">© 2020 EspeSoft</div>
         </footer>
     </div>
 </body>

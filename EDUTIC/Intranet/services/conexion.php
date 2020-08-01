@@ -4,7 +4,7 @@ class Conexion
 {
     function obtenerConexion()
     {
-        $conexion = mysqli_connect("127.0.0.1","root","","testcolegios");
+        $conexion = mysqli_connect("127.0.0.1","root","","colegio");
         if(!$conexion)
         {
             echo ("ERROR EN LA CONEXIÓN");

@@ -8,13 +8,38 @@
     $nombreAula="";
     $capacidadAula="";
     $pisoAula="";
+    $codigoEdificio="";
+    $nombreEdificio="";
+    $cantidadPisos="";
     $accion="Añadir";
     $mensaje="Registro de Nueva Aula";
+    $mensajeEdificios = "Registro de nuevo Edificio";
     
     //EDIFICIOS
     if(isset($_POST['accionEdificios']) && ($_POST['accionEdificios']=='Añadir'))
     {
         $infraestructura->insertarEdificio($_POST['codigo_edificio'],$_POST['sede'],$_POST['nombre_edificio'],$_POST['pisos']);
+    }
+    else if(isset($_POST["accionEdificios"]) && ($_POST["accionEdificios"]=="Modificar"))
+    {
+        $infraestructura->modificarEdicio($_POST['codigo_edificio'],$_POST['sede'],$_POST['nombre_edificio'],
+                                        $_POST['pisos'],$_POST['codigo_edificio_comparar']);
+    }
+    else if(isset($_GET["modificarEdificio"]))
+    {
+        $result = $infraestructura->encontrarEdificio($_GET['modificarEdificio']);
+        if($result!=null)
+        {
+            $codigoEdificio = $result['COD_EDIFICIO'];
+            $nombreEdificio = $result['NOMBRE'];
+            $cantidadPisos = $result['CANTIDAD_PISOS'];
+            $mensajeEdificios = "ModificarEdificio";
+            $accion="Modificar";
+        }
+    }
+    else if(isset($_GET['eliminarEdificio']))
+    {
+        $infraestructura->eliminarEdificio($_GET['eliminarEdificio']);
     }
 
     //AULAS
@@ -26,7 +51,8 @@
     else if(isset($_POST["accionAula"]) && ($_POST["accionAula"]=="Modificar"))
     {
         $infraestructura->modificarAula($_POST['codigo_aula'],$_POST['edificio'],$_POST['nombre_aula'],
-                                        $_POST['capacidad_aula'],$_POST['tipo_aula'],$_POST['piso_aula']);
+                                        $_POST['capacidad_aula'],$_POST['tipo_aula'],$_POST['piso_aula'],
+                                        $_POST['codigo_aula_comparar']);
     }
     else if(isset($_GET["modificarAula"]))
     {
@@ -94,22 +120,11 @@
                     <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li>
-                        <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Infraestructura</a>
+                        <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
                     </li>
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Organizacion Academica <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./AnioElectivo.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                    Año
-                                    lectivo</a></li>
-                            <li><a href="./AsignacionAsignaturas.html"><i
-                                        class="zmdi zmdi-male-alt zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                    Asignación de asignaturas</a></li>
-                        </ul>
+                        <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
                     </li>
-
                     <li>
                         <!------------------------------------ Periodo ---------------------------->
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
@@ -290,13 +305,10 @@
         <!--GESTIÓN DE EDIFICIOS-->
         <div class="container-fluid">
             <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Datos de los edificios de la Institución</div>
+                <div class="title-flat-form title-flat-blue">
+                    <a href="#edificios" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px; color:white;">Datos de los Edificios de la Institución</a>
+                </div>
                 <form id="edificios" name="edificios" id="edificios" method="post">
-                    <div style="margin-left: 14px;">
-                        <a href="#edificiosForm" class="btn btn-primary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulasForm">
-                            <i class="zmdi zmdi-plus-circle-o"></i>&nbsp;&nbsp; Añadir Nuevo Edificio
-                        </a>
-                    </div>
                     <div class="row container-flat-form">
                         <div class="table-responsive">
                             <table id="tablaEdificios" class="table-striped table-bordered table-condensed" style="width: 100%;">
@@ -326,14 +338,14 @@
                                         <td><?php echo $row ["CANTIDAD_PISOS"];?></td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="#edificiosForm" class="btn btn-success" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="edificiosForm">
+                                                <a href="GestionInfraestructura.php?modificarEdificio=<?php echo $row ["COD_EDIFICIO"];?>#edificiosForm" class="btn btn-success" type="button">
                                                     <i class="zmdi zmdi-refresh"></i>
                                                 </a>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="#edificiosForm" class="btn btn-danger" role="button">
+                                                <a href="GestionInfraestructura.php?eliminarEdificio=<?php echo $row ["COD_EDIFICIO"];?>#edificiosForm" class="btn btn-danger" role="button">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </a>
                                             </div>
@@ -350,12 +362,14 @@
                                     <?php } ?>
                                 </tbody> 
                             </table>
-                        </div><br><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2 collapse" id="edificiosForm">
+                        </div><br>
+                        <h1 style="text-align: center;"><?php echo $mensajeEdificios ?></h1><br><br>
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="edificiosForm">
+                            <input type="hidden" name="codigo_edificio_comparar" value="<?php echo $codigoEdificio ?>">
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Código de Edificio" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el código del edificio" name="codigo_edificio">
+                                    title="Escriba el código del edificio" name="codigo_edificio" value="<?php echo $codigoEdificio ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código de Edificio</label>
@@ -376,7 +390,7 @@
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general" placeholder="Nombre del edificio"
                                     required="" data-toggle="tooltip" data-placement="top"
-                                    title="Nombre del Edificio" name="nombre_edificio">
+                                    title="Nombre del Edificio" name="nombre_edificio" value="<?php echo $nombreEdificio ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Nombre del Edificio</label>
@@ -384,7 +398,7 @@
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Cantidad de Pisos" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba la cantidad de pisos" name="pisos">
+                                    title="Escriba la cantidad de pisos" name="pisos" value="<?php echo $cantidadPisos ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Cantidad de Pisos</label>
@@ -466,9 +480,10 @@
                                 </tbody> 
                             </table>
                         </div><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="aulasForm">
-                            <h1><?php $mensaje ?></h1><br><br>
-                            <div class="group-material">
+                        <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" >
+                            <input type="hidden" name="codigo_aula_comparar" value="<?php echo $codigoAula ?>">
+                            <div class="group-material" id="aulasForm">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Código de Aula" required="" data-toggle="tooltip" data-placement="top"
                                     title="Escriba el código del Aula" name="codigo_aula" value="<?php echo $codigoAula ?>">

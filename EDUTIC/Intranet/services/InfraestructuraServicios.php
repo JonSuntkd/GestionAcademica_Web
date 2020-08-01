@@ -17,6 +17,33 @@ class InfraestructuraServicios extends MainService
         $stmt->execute();
         $stmt->close();
     }
+    function encontrarEdificio($codigo_edificio)
+    {
+        $result = $this->conexion->query("SELECT * FROM edificio WHERE COD_EDIFICIO='".$codigo_edificio."'");
+        if($result->num_rows>0)
+        {
+            return $result->fetch_assoc();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    function modificarEdicio($cod_edificio, $cod_sede, $nombre, $cantidad_pisos, $cod_comparar)
+    {
+        $stmt = $this->conexion->prepare("UPDATE edificio SET COD_EDIFICIO=?,COD_SEDE=?,NOMBRE=?,CANTIDAD_PISOS=?
+                                          WHERE COD_EDIFICIO=?");
+        $stmt->bind_param('sssis' ,$cod_edificio,$cod_sede, $nombre, $cantidad_pisos, $cod_comparar);
+        $stmt->execute();
+        $stmt->close();
+    }
+    function eliminarEdificio($codigo_edificio)
+    {
+        $stmt = $this->conexion->prepare("DELETE FROM edificio WHERE COD_EDIFICIO=?");
+        $stmt->bind_param('s',$codigo_edificio);
+        $stmt->execute();
+        $stmt->close();
+    }
     //AULAS
     function insertarAula($cod_aula, $cod_edificio, $nombre, $capacidad, $tipo, $piso)
     {
@@ -38,11 +65,11 @@ class InfraestructuraServicios extends MainService
             return null;
         }
     }
-    function modificarAula($cod_aula, $cod_edificio, $nombre, $capacidad, $tipo, $piso)
+    function modificarAula($cod_aula, $cod_edificio, $nombre, $capacidad, $tipo, $piso,$cod_aula_comparar)
     {
         $stmt = $this->conexion->prepare("UPDATE aula SET COD_AULA=?,COD_EDIFICIO=?,NOMBRE=?,CAPACIDAD=?,TIPO=?,PISO=?
                                           WHERE COD_AULA=?");
-        $stmt->bind_param('sssisii',$cod_aula, $cod_edificio, $nombre, $capacidad, $tipo, $piso,$cod_aula);
+        $stmt->bind_param('sssisis',$cod_aula,$cod_edificio, $nombre, $capacidad, $tipo, $piso,$cod_aula_comparar);
         $stmt->execute();
         $stmt->close();
     }

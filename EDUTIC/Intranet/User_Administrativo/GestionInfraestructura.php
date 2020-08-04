@@ -1,5 +1,9 @@
 <?php 
     include '../services/InfraestructuraServicios.php';
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
     $infraestructura = new InfraestructuraServicios();
     $sede="sede";
     $edificio="edificio";
@@ -211,7 +215,7 @@
                 <li style="color:#fff; cursor:default;">
                     <span class="all-tittles">Administrativo</span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

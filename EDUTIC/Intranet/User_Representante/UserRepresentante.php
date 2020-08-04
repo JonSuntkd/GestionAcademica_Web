@@ -1,3 +1,11 @@
+<?php 
+    include '../services/InfraestructuraServicios.php';
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -65,9 +73,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Representante</span>
+                    <span class="all-tittles"><?php echo $_SESSION['user']['NOMBRE_USUARIO']?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

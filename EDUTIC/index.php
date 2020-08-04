@@ -1,3 +1,36 @@
+<?php
+	include './intranet/services/LoginServicio.php';
+
+	if (isset($_POST['username']) && isset($_POST['pass'])){
+		$loginService = new LoginServicio();
+		$row = $loginService->login($_POST['username'], $_POST['pass']);
+		if (isset($row)) {
+			session_start();
+			$_SESSION["user"] = $row;
+			//header('Location: ./intranet/User_Administrativo/GestionInfraestructura.php');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '1') {
+			header('Location: ./intranet/User_Super/SuperUser.php');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '2') {
+			header('Location: ./intranet/User_Directivo/userDirectivo.php');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '3') {
+			header('Location: ./intranet/User_Administrativo/GestionInfraestructura.php');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '4') {
+			header('Location: ./intranet/User_Docente/UserDocente.php');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '5') {
+			header('Location: ./intranet/User_Alumno/UserAlumno.html');
+		}
+		if ($_SESSION['user']['COD_ROL'] == '6') {
+			header('Location: ./intranet/User_Representante/UserRepresentante.php');
+		}
+	}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +66,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('./images/bg-03.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" role="form" action="index.php" method= "post">
 					<span class="login100-form-logo">
 						<i class="fa fa-user"></i>
 					</span>
@@ -52,7 +85,7 @@
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
-					<div class="selectUser">
+					<!--<div class="selectUser">
 						<p for="users" class="users1">Escoja un usuario:</p>
 						<select name="rol" id="users" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
 							<option value= "seleccion" disabled selected> >Tipo Usuario</option>
@@ -63,7 +96,7 @@
 							<option value="./Intranet/User_Alumno/UserAlumno.html">Estudiante</option>
 							<option value="./Intranet/User_Representante/UserRepresentante.html">Representante</option>
 						</select>
-					</div>
+					</div>-->
 					<br>
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">
@@ -75,9 +108,6 @@
 						<a class="txt1 interlineado" href="./Intranet/Gestion_Password/GestionPass.html">
 							¿Olvidó su contraseña?
 						</a><br>
-						<a class="txt1 interlineado" href="./Intranet/Gestion_Password/InPrimeraVez.html">
-							Ingreso por Primera Vez
-						</a>
 					</div>
 				</form>
 			</div>

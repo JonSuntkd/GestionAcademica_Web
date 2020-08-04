@@ -9,6 +9,18 @@ class PersonaServicios extends MainService
         return $this->conexion->query("SELECT * FROM ".$nombreEntidad);
     }
 
+    function mostrarPersonaCedula($cedula)
+    {
+        return $this->conexion->query("SELECT * FROM persona WHERE CEDULA='".$cedula."'");
+    }
+
+    function mostrarPersonal($tipo_personal)
+    {
+        return $this->conexion->query("SELECT CEDULA,APELLIDO,NOMBRE,DIRECCION,TELEFONO,FECHA_NACIMIENTO,GENERO,CORREO,CORREO_PERSONAL
+                                       FROM persona P, tipo_persona_persona T
+                                       WHERE T.COD_PERSONA = P.COD_PERSONA
+                                       AND T.COD_TIPO_PERSONA='".$tipo_personal."'");
+    }
     
     //PERSONAL (Administrativo, Directivo, Docente)
     function añadirPersonal($cedula,$apellido,$nombre,$direccion,$telefono,$fecha_nacimiento,$genero,$correo,$correo_personal)

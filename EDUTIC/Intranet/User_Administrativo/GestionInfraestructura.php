@@ -4,6 +4,11 @@
     $sede="sede";
     $edificio="edificio";
     $aula="aula";
+    $codigoSede="";
+    $nombreSede="";
+    $direccionSede="";
+    $telefonoSede="";
+    $codPostalSede="";
     $codigoAula = "";
     $nombreAula="";
     $capacidadAula="";
@@ -12,9 +17,35 @@
     $nombreEdificio="";
     $cantidadPisos="";
     $accion="Añadir";
+    $mensajeSede="Registrar Nueva Sede";
     $mensaje="Registro de Nueva Aula";
     $mensajeEdificios = "Registro de nuevo Edificio";
-    
+    //SEDE
+    if(isset($_POST['accionSede']) && ($_POST['accionSede']=='Añadir'))
+    {
+        $infraestructura->insertarSede($_POST['codigo_sede'],$_POST['nombre_sede'],$_POST['direccion_sede'],
+                                       $_POST['telefono_sede'],$_POST['cod_postal_sede']);
+    }
+    else if(isset($_POST["accionSede"]) && ($_POST["accionSede"]=="Modificar"))
+    {
+        $infraestructura->modificarSede($_POST['codigo_sede'],$_POST['nombre_sede'],$_POST['direccion_sede'],
+        $_POST['telefono_sede'],$_POST['cod_postal_sede'],$_POST['codigo_sede_comparar']);
+    }
+    else if(isset($_GET["modificarSede"]))
+    {
+        $result = $infraestructura->encontrarSede($_GET['modificarSede']);
+        if($result!=null)
+        {
+            $codigoSede = $result['COD_SEDE'];
+            $nombreSede = $result['NOMBRE'];
+            $direccionSede = $result['DIRECCION'];
+            $telefonoSede = $result['TELEFONO'];
+            $codPostalSede = $result['CODIGO_POSTAL'];
+            $mensajeSede = "Modificar datos de la Sede";
+            $accion="Modificar";
+        }
+    }
+
     //EDIFICIOS
     if(isset($_POST['accionEdificios']) && ($_POST['accionEdificios']=='Añadir'))
     {
@@ -126,9 +157,25 @@
                         <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
                     </li>
                     <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Planificación Académica<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="./GestionPlanificacion.php"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>Periodo Lectivo</a>
+                            </li>
+                            <li>
+                                <a href="./GestionPlanificacionPeriodo.php"><i class="zmdi zmdi-collection-bookmark zmdi-hc-fw"></i>Asignaturas y Aulas</a>
+                            </li>
+                            <li>
+                                <a href="./GestionPlanificacionParalelos.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>Paralelos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <!------------------------------------ Periodo ---------------------------->
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Periodo <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
+                            Periodo </div>
                         <ul class="list-unstyled">
                             <li><a href="./GestionPeriodos.html">
                                     <i class="zmdi zmdi-face zmdi-hc-fw">
@@ -198,18 +245,13 @@
                 </div>
             </div>
         </div>
-        <p class="text-center" style="margin-left:25px">
-            <a href="#sedes" class="btn btn-primary btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedes" style="margin-right: 20px;">Datos de la Sede</a>
-            <a href="#edificios" class="btn btn-primary btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="edificios" style="margin-right: 20px;">Datos de los Edificios</a>
-            <a href="#aulas" class="btn btn-primary btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px;">Datos de las Aulas</a>
-        </p>
         <!--GESTIÓN DE SEDES-->
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#sedes" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedes" style="margin-right: 20px; color:white;">Datos de la Sede de la Institución</a>
+                    <a href="#sedes" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedes" style="margin-right: 20px; color:white; font-size:30px;">Datos de la Sede de la Institución</a>
                 </div>
-                <form id="sedes">
+                <form id="sedes" method="post" name="sedes" action="">
                     <div class="row container-flat-form">
                         <div class="table-responsive">
                             <table id="tablaSedes" class="table-striped table-bordered table-condensed" style="width: 100%;">
@@ -240,7 +282,7 @@
                                         <td><?php echo $row ["CODIGO_POSTAL"];?></td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="#sedesForm" class="btn btn-success" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedesForm">
+                                                <a href="GestionInfraestructura.php?modificarSede=<?php echo $row ["COD_SEDE"];?>#sedesForm" class="btn btn-success" type="button">
                                                     <i class="zmdi zmdi-refresh"></i>
                                                 </a>
                                             </div>
@@ -259,10 +301,20 @@
                             </table>
                         </div><br><br>
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                        <h1 style="text-align: center;"><?php echo $mensajeSede ?></h1><br><br>
+                            <input type="hidden" name="codigo_sede_comparar" value="<?php echo $codigoSede ?>">
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general"
+                                    placeholder="Código de la sede" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Escriba el código de la sede" name="codigo_sede" value="<?php echo $codigoSede ?>">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Código de la Sede</label>
+                            </div>
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Nombre de la sede" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el nombre de la sede">
+                                    title="Escriba el nombre de la sede" name="nombre_sede" value="<?php echo $nombreSede ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Nombre de la Sede</label>
@@ -270,7 +322,7 @@
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Dirección de la Sede" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba la dirección de la Sede">
+                                    title="Escriba la dirección de la Sede" name="direccion_sede" value="<?php echo $direccionSede ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Dirección de la Sede</label>
@@ -278,7 +330,7 @@
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general" placeholder="Teléfono de la Sede"
                                     required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el teléfono de la Sede">
+                                    title="Escriba el teléfono de la Sede" name="telefono_sede" value="<?php echo $telefonoSede ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Teléfono de la Sede</label>
@@ -286,16 +338,15 @@
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Código Postal" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el código postal de la sede">
+                                    title="Escriba el código postal de la sede" name="cod_postal_sede" value="<?php echo $codPostalSede ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código Postal</label>
                             </div>
                             <p class="text-center">
+                                <input type="submit" name="accionSede" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
                                         class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>
-                                    &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>
                     </div>
@@ -306,7 +357,7 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#edificios" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px; color:white;">Datos de los Edificios de la Institución</a>
+                    <a href="#edificios" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px; color:white;font-size:30px;">Datos de los Edificios de la Institución</a>
                 </div>
                 <form id="edificios" name="edificios" id="edificios" method="post">
                     <div class="row container-flat-form">
@@ -417,7 +468,7 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#aulas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px; color:white;">Datos de las Aulas</a>
+                    <a href="#aulas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aulas" style="margin-right: 20px; color:white; font-size:30px;">Datos de las Aulas</a>
                 </div>
                 <form action="" name="aulas" id="aulas" method="post">
                     <div style="margin-left: 14px;">

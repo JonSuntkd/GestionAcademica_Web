@@ -85,7 +85,7 @@ $representante="REP";
                         </ul>
                     </li>
                     <li><a href="./SuperUser.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Roles</a></li>
-                    <li><a href="./ReportesPersonas.html"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
+                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
                     <li><a href="./GestionEstado.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Estado</a></li>
                 </ul>
             </div>
@@ -181,9 +181,9 @@ $representante="REP";
                    </div><br>
                    <div class="row">
                         <div class="group-material col-md-4 mb-3">
-                            <input type="text" class="material-control" placeholder="Fecha de nacimiento del Representante" required="" 
+                            <input type="date" class="material-control" placeholder="Fecha de nacimiento del Representante" required="" 
                                    data-toggle="tooltip" data-placement="top" title="Escriba la Fecha de nacimiento del representante" 
-                                   name="fecha_nacimiento_representante">
+                                   name="fecha_nacimiento_representante" onchange="obtenerFecha(this)">
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label for="fecha_nacimiento_representante" class="col-md-6">Fecha Nacimiento</label>
@@ -266,9 +266,9 @@ $representante="REP";
                    </div><br>
                    <div class="row">
                         <div class="group-material col-md-4 mb-3">
-                            <input type="text" class="material-control" placeholder="Fecha de nacimiento del estudiante" required="" 
+                            <input type="date" class="material-control" placeholder="Fecha de nacimiento del estudiante" required="" 
                                    data-toggle="tooltip" data-placement="top" title="Escriba la Fecha de nacimiento del estudiante" 
-                                   name="fecha_nacimiento_estudiante">
+                                   name="fecha_nacimiento_estudiante" onchange="obtenerFecha(this)">
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label for="fecha_nacimiento_estudiante" class="col-md-6">Fecha Nacimiento</label>

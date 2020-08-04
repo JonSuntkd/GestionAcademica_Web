@@ -1,42 +1,21 @@
 <?php
-    include '../services/AsignaturaServicios.php';
-    $asignatura = new AsignaturaServicios();
-    $nivel="PRIMERO";
-    $mensaje = "Añadir Nueva asignatura";
-    $accion = "Añadir";
-    $codigoAsignatura = "";
-    $nombreAsignatura = "";
-    $creditosAsignatura = "";
 
-    if(isset($_POST['accionAsignatura']) && ($_POST['accionAsignatura']=='Añadir'))
+include '../services/PlanificacionServicios.php';
+$planificacion = new PlanificacionServicios();
+    $codigoPeriodo = "";
+    $estado="";
+    $fechaInicio="";
+    $fechaFin="";
+    $accion="Añadir";
+    $mensaje="Añadir Periodo Académico";
+    if(isset($_POST['accionPeriodo']) && ($_POST['accionPeriodo']=='Añadir'))
     {
-        $asignatura->insertarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
-                                        $_POST['creditos_asignatura'],$_POST['tipo_asignatura']);
-    }
-    else if(isset($_POST["accionAsignatura"]) && ($_POST["accionAsignatura"]=="Modificar"))
-    {
-        $asignatura->modificarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
-                            $_POST['creditos_asignatura'],$_POST['tipo_asignatura'],$_POST['codigo_asignatura_comparar']);
-    }
-    else if(isset($_GET["modificarAsignatura"]))
-    {
-        $result = $asignatura->encontrarAsignatura($_GET['modificarAsignatura']);
-        if($result!=null)
-        {
-            $codigoAsignatura = $result['COD_ASIGNATURA'];
-            $nombreAsignatura = $result['NOMBRE'];
-            $creditosAsignatura = $result['CREDITOS'];
-            $mensaje="Modificar Asignatura";
-            $accion="Modificar";
-        }
-    }
-    else if(isset($_GET['eliminarAsignatura']))
-    {
-        $asignatura->eliminarAsignatura($nivel,$_GET['eliminarAsignatura']);
+        $planificacion->insertarPeriodo($_POST['cod_periodo_lectivo'],$_POST['estado'],
+                                        $_POST['fecha_inicio'],$_POST['fecha_fin']);
     }
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 
 <head>
@@ -51,6 +30,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="../css/style.css">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../js/jquery-1.11.2.min.js"><\/script>')</script>
     <script src="../js/modernizr.js"></script>
@@ -109,8 +89,8 @@
                     </li>
                     <li>
                         <!------------------------------------ Periodo ---------------------------->
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Periodo <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
+                            Periodo </div>
                         <ul class="list-unstyled">
                             <li><a href="./GestionPeriodos.html">
                                     <i class="zmdi zmdi-face zmdi-hc-fw">
@@ -150,7 +130,6 @@
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
-
                 <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
                     <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
                 </li>
@@ -161,84 +140,130 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small>Gestión asignaturas</small></h1>
+                <h1 class="all-tittles">EduTic <small>Gestión de Periodo Académico</small></h1>
             </div>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
+                <li role="presentation" class="active"><a href="admininstitution.php">Periodo Académico</a></li>
+            </ul>
         </div>
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
-                    <img src="../assets/img/user02.png" alt="user" class="img-responsive center-box"
+                    <img src="../assets/img/institution.png" alt="user" class="img-responsive center-box"
                         style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Bienvenido a la sección donde se encuentra el listado de asignaturas para el nivel inicial registrados en el sistema,
-                    puedes actualizar algunos datos de las asignaturas o eliminar el registro completo de la asignatura
-                    siempre.<br>
-                    <strong class="text-danger"><i class="zmdi zmdi-alert-triangle"></i> &nbsp; ¡Importante! </strong>Si
-                    eliminas la asignatura del sistema se borrarán todos los datos relacionados con él.
+                    Funcionalidad que permite gestionar el presente periodo académico de la institución; permite
+                    establacer las diferentes asignaturas que van a ser dictadas para cada nivel educativo, así como
+                    la respectiva asignación del docente. 
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12 lead">
-                    <ol class="breadcrumb">
-                        <li class="active">Educación Inicial</li>
-                        <li><a href="./GestionAsignaturasBasica.php">Educación Básica Inicial</a></li>
-                        <li><a href="./GestionAsignaturasSuperior.php">Educación Básica Superior</a></li>
-                        <li><a href="./GestionAsignaturasBachillerato.php">Educación de Bachillerato</a></li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <!--GESTION ASIGNATURAS EDUCACION INICIAL-->
+        <!--GESTIÓN DE SEDES-->
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;font-size:30px;">Asignaturas para primer año de educación inicial</a>
+                    <a href="#periodo" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedes" style="margin-right: 20px; color:white; font-size:30px;">Datos del Periodo Lectivo</a>
                 </div>
-                <form id="edificios" name="edificios" id="edificios" method="post">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <form id="periodo" name="periodo" id="periodo" method="post">
                     <div class="row container-flat-form">
-                        
+                        <div class="table-responsive">
+                            <table id="tablaEdificios" class="table-striped table-bordered table-condensed" style="width: 100%;">
+                               <thead class="text-center">
+                                    <tr>
+                                        <th>Código del Periodo Lectivo</th>
+                                        <th>Estado</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Actualizar</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                    <?php
+                                        $result = $planificacion->mostrarPeriodos();
+                                        if($result->num_rows>0)
+                                        {
+                                            while($row = $result->fetch_assoc())
+                                            {     
+                                    ?>
+                                    <tr>
+                                        <!--DATOS DE LA TABLA EDIFICIOS-->
+                                        <td><?php echo $row ["COD_PERIODO_LECTIVO"];?></td>
+                                        <td><?php echo $row ["ESTADO"];?></td>
+                                        <td><?php echo $row ["FECHA_INICIO"];?></td>
+                                        <td><?php echo $row ["FECHA_FIN"];?></td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionAsignaturasInicial.php?modificarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-success" type="button">
+                                                    <i class="zmdi zmdi-refresh"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionAsignaturasInicial.php?eliminarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-danger" role="button">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php   } 
+                                        } 
+                                        else
+                                        {
+                                    ?>
+                                    <tr>
+                                        <td>No hay datos en la tabla</td>
+                                    </tr>        
+                                    <?php } ?>
+                                </tbody> 
+                            </table>
+                        </div><br>
                         <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="asignaturasForm">
-                            <input type="hidden" name="codigo_asignatura_comparar" value="<?php echo $codigoAsignatura ?>">
+                            <input type="hidden" name="cod_per_lec" value="<?php echo $codigoPeriodo ?>">
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
-                                    placeholder="Código de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el código de la Asignatura" name="codigo_asignatura" value="<?php echo $codigoAsignatura ?>">
+                                    placeholder="Código del Periodo Lectivo" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Escriba el código del Periodo Lectivo" name="cod_periodo_lectivo" value="<?php echo $codigoPeriodo ?>">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Código de la Asignatura</label>
+                                <label>Código del Periodo Lectivo</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general"
-                                    placeholder="Nombre de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el nombre de la Asignatura" name="nombre_asignatura" value="<?php echo $nombreAsignatura ?>">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Nombre de la Asignatura</label>
-                            </div>
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general"
-                                    placeholder="Créditos de la Asignatura" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba los créditos de la Asignatura" name="creditos_asignatura" value="<?php echo $creditosAsignatura ?>">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Créditos de la Asignatura</label>
-                            </div> 
-                            <div class="group-material">
-                                <span style="color: #E34724;">Tipo de Asignatura</span>
-                                <select name="tipo_asignatura" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
-                                data-original-title="Elige el tipo de asignatura">
+                                <span style="color: #E34724;">Estado</span>
+                                <select name="estado" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Estado del periodo lectivo">
                                     <option value="" disabled="" selected="">Selecciona una opción</option>
-                                    <option value="MIN">Ministerial</option>
-                                    <option value="PRO">Institucional</option>
-                                    <option value="OTR">Otra</option>
+                                    <option value="ACT">Activo</option>
+                                    <option value="INA">Inactivo</option>
                                 </select>
                             </div>
+                            <div class="group-material">
+                                <input type="date" class="material-control tooltips-general" placeholder="Fecha de Inicio del Periodo Académico" required="" 
+                                                   data-toggle="tooltip" data-placement="top" title="Escriba la fecha de inicio del Periodo Académico" 
+                                                   name="fecha_inicio" onchange="obtenerFecha(this)">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Fecha de Inicio</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="date" class="material-control tooltips-general" placeholder="Fecha de Finalización del Periodo Académico" required="" 
+                                                   data-toggle="tooltip" data-placement="top" title="Escriba la fecha de finalización del Periodo Académico" 
+                                                   name="fecha_fin" onchange="obtenerFecha(this)">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Fecha de Finalización</label>
+                            </div>
                             <p class="text-center">
-                                <input type="submit" name="accionAsignatura" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
+                                <input type="submit" name="accionPeriodo" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
                                         class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
                             </p>
@@ -247,8 +272,7 @@
                 </form>
             </div>
         </div>
-
-
+        
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -269,6 +293,7 @@
                 </div>
             </div>
         </div>
+
         <footer class="footer full-reset">
             <div class="container-fluid">
                 <div class="row">
@@ -281,7 +306,7 @@
                         </p>
                     </div>
                     <div class="col-xs-12 col-sm-6">
-                        <h4 class="all-tittles">Desarrollador</h4>
+                        <h4 class="all-tittles">Desarrollado por:</h4>
                         <ul class="list-unstyled">
                             <li><i class="zmdi zmdi-check zmdi-hc-fw"></i>&nbsp; EspeSoft <i
                                     class="zmdi zmdi-facebook zmdi-hc-fw footer-social"></i><i
@@ -294,5 +319,14 @@
         </footer>
     </div>
 </body>
+
+<script>
+
+function obtenerFecha(e)
+{
+    var fecha = moment(e.value);
+    return fecha.format("YYYY/MM/DD")
+}
+</script>
 
 </html>

@@ -1,7 +1,6 @@
 <?php
     include '../services/AsignaturaServicios.php';
     $asignatura = new AsignaturaServicios();
-    $nivel="BAC";
     $mensaje = "Añadir Nueva asignatura";
     $accion = "Añadir";
     $codigoAsignatura = "";
@@ -10,29 +9,8 @@
 
     if(isset($_POST['accionAsignatura']) && ($_POST['accionAsignatura']=='Añadir'))
     {
-        $asignatura->insertarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
+        $asignatura->insertarAsignatura($_POST['cod_nivel_educativo'],$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
                                         $_POST['creditos_asignatura'],$_POST['tipo_asignatura']);
-    }
-    else if(isset($_POST["accionAsignatura"]) && ($_POST["accionAsignatura"]=="Modificar"))
-    {
-        $asignatura->modificarAsignatura($nivel,$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
-                            $_POST['creditos_asignatura'],$_POST['tipo_asignatura'],$_POST['codigo_asignatura_comparar']);
-    }
-    else if(isset($_GET["modificarAsignatura"]))
-    {
-        $result = $asignatura->encontrarAsignatura($_GET['modificarAsignatura']);
-        if($result!=null)
-        {
-            $codigoAsignatura = $result['COD_ASIGNATURA'];
-            $nombreAsignatura = $result['NOMBRE'];
-            $creditosAsignatura = $result['CREDITOS'];
-            $mensaje="Modificar Asignatura";
-            $accion="Modificar";
-        }
-    }
-    else if(isset($_GET['eliminarAsignatura']))
-    {
-        $asignatura->eliminarAsignatura($nivel,$_GET['eliminarAsignatura']);
     }
 ?>
 
@@ -83,7 +61,28 @@
                         <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
                     </li>
                     <li>
-                        <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Gestión de Asignaturas <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
+                        <ul class="list-unstyled">
+                            <li><a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Registro de Asignaturas</a></li>
+                            <li><a href="./GestionAsignaturasReportes.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Reportes de Asignaturas</a></li>
+                        </ul>  
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Planificación Académica<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="./GestionPlanificacion.php"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>Periodo Lectivo</a>
+                            </li>
+                            <li>
+                                <a href="./GestionPlanificacionPeriodo.php"><i class="zmdi zmdi-collection-bookmark zmdi-hc-fw"></i>Asignaturas y Aulas</a>
+                            </li>
+                            <li>
+                                <a href="./GestionPlanificacionParalelos.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>Paralelos</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <!------------------------------------ Periodo ---------------------------->
@@ -173,63 +172,28 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;">Asignaturas para Educación de Bachillerato (4to a 6to curso)</a>
+                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white; font-size:30px">Asignaturas para Educación de Bachillerato</a>
                 </div>
-                <form id="edificios" name="edificios" id="edificios" method="post">
+                <div class="row">
+                    <div class="grou-material col-md-2 mb-5">
+
+                    </div>
+                    <form name="asignaturasForm" id="asignaturasForm" method="post">
+                        <div class="group-material col-md-8 mb-5 ml-4">
+                            <span style="color: #E34724;"><h2>Seleccione un nivel</h2></span>
+                            <select id="cod_nivel_educativo" name="cod_nivel_educativo" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Elige el nivel educativo">
+                                <option value="" disabled="" selected="">Selecciona un nivel educativo</option>
+                                <option value="PRIMBACH">Primer año de bachillerato</option>
+                                <option value="SEGUBACH">Segundo año de bachillerato</option>
+                                <option value="TERCBACH">Tercer año de bachillerato</option>
+                            </select><br>
+                            <script type="text/javascript">
+                                var nivel = document.getElementById('cod_nivel_educativo').value = "<?php echo $_GET['cod_nivel_educativo'];?>";
+                            </script>
+                        </div>
+                </div>
                     <div class="row container-flat-form">
-                        <div class="table-responsive">
-                            <table id="tablaEdificios" class="table-striped table-bordered table-condensed" style="width: 100%;">
-                               <thead class="text-center">
-                                    <tr>
-                                        <th>Código de la Asignatura</th>
-                                        <th>Nombre</th>
-                                        <th>Horas Semanales</th>
-                                        <th>Tipo</th>
-                                        <th>Actualizar</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                               </thead>
-                               <tbody>
-                                    <?php
-                                        $result = $asignatura->mostrarAsignaturas($nivel);
-                                        if($result->num_rows>0)
-                                        {
-                                            while($row = $result->fetch_assoc())
-                                            {     
-                                    ?>
-                                    <tr>
-                                        <!--DATOS DE LA TABLA EDIFICIOS-->
-                                        <td><?php echo $row ["COD_ASIGNATURA"];?></td>
-                                        <td><?php echo $row ["NOMBRE"];?></td>
-                                        <td><?php echo $row ["CREDITOS"];?></td>
-                                        <td><?php echo $row ["TIPO"];?></td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="GestionAsignaturasBachillerato.php?modificarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-success" type="button">
-                                                    <i class="zmdi zmdi-refresh"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="GestionAsignaturasBachillerato.php?eliminarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-danger" role="button">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <?php   } 
-                                        } 
-                                        else
-                                        {
-                                    ?>
-                                    <tr>
-                                        <td>No hay datos en la tabla</td>
-                                    </tr>        
-                                    <?php } ?>
-                                </tbody> 
-                            </table>
-                        </div><br>
                         <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="asignaturasForm">
                             <input type="hidden" name="codigo_asignatura_comparar" value="<?php echo $codigoAsignatura ?>">

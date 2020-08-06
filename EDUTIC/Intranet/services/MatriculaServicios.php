@@ -16,11 +16,10 @@ class MatriculaServicios extends MainService
     {
         return $this->conexion->query("SELECT * FROM nivel_educativo ");   
     }
+
+
     function agregarMatricula($cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo)
     {
-        echo "DATOOOOSSSSS".$cod_periodo_lectivo;
-        echo "DATOOOOSSSSS".$cod_alumno;
-        echo "DATOOOOSSSSS".$cod_nivel_educativo;
         $stmt = $this->conexion->prepare("INSERT INTO matricula_periodo (COD_PERIODO_LECTIVO,COD_ALUMNO,COD_NIVEL_EDUCATIVO) 
                                           VALUES (?,?,?)");
         $stmt->bind_param('sss',$cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo);
@@ -29,11 +28,8 @@ class MatriculaServicios extends MainService
     }
     function periodo()
     {
-        return $this->conexion->query("SELECT * FROM periodo_lectivo");
+        return $this->conexion->query("SELECT * FROM periodo_lectivo WHERE ESTADO='ACT'");
     }
-
-
-
 
     function mostrarPeriodos()
     {

@@ -147,9 +147,7 @@
                                                 $result = $calificacion->docenteCalificacion($cod_docente);
                                                 foreach($result as $opciones):
                                             ?>
-                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?>|
-                                                       <?php echo $opciones['COD_ASIGNATURA'] ?>|
-                                                       <?php echo $opciones['COD_PARALELO'] ?>"><?php echo $opciones['NOMBRE'] ?>--<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?></option>
+                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO']?>|<?php echo $opciones['COD_ASIGNATURA']?>|<?php echo $opciones['COD_PARALELO']?>"><?php echo $opciones['NOMBRE'] ?>--<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?></option>
                                         <?php endforeach ?>
                                     </select>
                             </div>
@@ -178,7 +176,7 @@
                 if(isset($_POST['accionCalificacion']) && ($_POST['accionCalificacion']=='Aceptar'))
                 {
                     $valores = $_POST['asignatura'];
-                    $result_explode = explode('|', $valores);
+                    $result_explode = array_map('trim',explode('|',$valores));                    
                     $cod_nivel_educativo = $result_explode[0];
                     $cod_asignatura = $result_explode[1];
                     $cod_paralelo = $result_explode[2];
@@ -242,51 +240,26 @@
                         </div>
                         <input type="submit" name="accionNotas" value="Hecho" class="btn btn-primary" style="margin-right: 20px;" >
                     </form>
-                <?php 
-                    
-                    //if(isset($cod_periodo_lectivo))
-        
-        
+                <?php
                 } ?>              
             
         
             <?php
-                   if(isset($_POST['accionNotas'])&& ($_POST['accionNotas']=='Hecho'))
+                    if(isset($_POST['accionNotas'])&& ($_POST['accionNotas']=='Hecho'))
                     {
-                        echo "NIVEK".$_POST['cod_nivel_educativo'].'<br/>';
-                        echo "ASIG".$_POST['cod_asignatura'].'<br/>';
-                        echo "PARALELO".$_POST['cod_paralelo'].'<br/>';
-                        echo "PERIODO".$_POST['cod_periodo_lectivo'].'<br/>';
                         $codigo_alumno = $_POST['cod_alumno'];
-                        print_r($codigo_alumno);
                         $notas = $_POST['notas'];
-                        print_r($notas);
-                        //$calificacion->prueba($_POST['cod_periodo_lectivo'],8,$_POST['cod_nivel_educativo'],
-                          //                               $_POST['cod_asignatura'],$_POST['cod_paralelo'],6,"12.04",
-                            //                             "12.00","12.00");
                         foreach (array_combine($codigo_alumno, $notas) as $alumno => $notas) 
                         {
-                            echo ("<br>ALUMNO CON El CODIGO: ".$alumno." TIENES LAS SIGUIENTES NOTAS: ".$notas['nota1'].", ".$notas['nota2'].", ".$notas['nota3']);
-                            $calificacion->ingresarNotas($_POST['cod_periodo_lectivo'],intval($alumno),$_POST['cod_nivel_educativo'],
-                                                         $_POST['cod_asignatura'],$_POST['cod_paralelo'],intval($cod_docente),$notas['nota1'],
+                            $calificacion->ingresarNotas($_POST['cod_periodo_lectivo'],$alumno,$_POST['cod_nivel_educativo'],
+                                                         $_POST['cod_asignatura'],$_POST['cod_paralelo'],$cod_docente,$notas['nota1'],
                                                          $notas['nota2'],$notas['nota3']);
                         }
-                        /**foreach($codigo_alumno as $cod)
-                        {
-                            echo ("ALUMNO: ").$cod.'</br>';
-                        }**/
-                        /**foreach($notas as $notasIndividual)
-                        {
-                            echo $notasIndividual['nota1'].' '.$notasIndividual['nota2'].' '.$notasIndividual['nota3'].'<br/>';
-                        }**/
                     }
         ?>
 
         </div>
         </section>
-
-
-
 
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">

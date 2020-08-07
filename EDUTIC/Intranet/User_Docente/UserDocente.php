@@ -49,7 +49,7 @@
                 <ul class="list-unstyled">
                     <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                    <li><a href="./UserDocenteCalificaciones.html">
+                    <li><a href="./UserDocenteCalificaciones.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Calificaciones</a></li>

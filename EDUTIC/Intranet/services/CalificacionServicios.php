@@ -18,6 +18,9 @@ class CalificacionServicios extends MainService
     }
     function listarEstudiantes($cod_nivel_educativo)
     {
+        //OJO PARA DISCRIMINAR POR PARALELOS EN CASO DE QUE SEA 2 CURSOS DE LOS MISMOS
+        //EL JOIN CON LA TABLA ASIGNATURA PERIODO Y MATRICULA PERIODO TE SIRVE PERO HAY QUE VER
+        //LA FORMA PARA QUE TRAIGA LOS DATOS DEL ESTUDIANTE
         return $this->conexion->query("SELECT persona.COD_PERSONA, persona.APELLIDO, persona.NOMBRE
                                        FROM persona 
                                        INNER JOIN matricula_periodo
@@ -26,44 +29,11 @@ class CalificacionServicios extends MainService
     }
     function ingresarNotas($cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo,$cod_asignatura,$cod_paralelo,$cod_docente,$nota1,$nota2,$nota3)
     {
-        echo("PROBANDO VALORES-->TENGO PERIODO-->".$cod_periodo_lectivo).'<br>';
-        echo("TENGO ALUMNO-->".$cod_alumno).'<br>';
-        echo("TENGO NIVEL-->".$cod_nivel_educativo).'<br>';
-        echo("TENGO ASIGNATURA-->".$cod_asignatura).'<br>';
-        echo("TENGO PARALELO-->".$cod_paralelo).'<br>';
-        echo("TENGO DOCENTE-->".$cod_docente).'<br>';
-        echo("TENGO NOTA-->".$nota1).'<br>';
-        echo("TENGO NOTA-->".$nota2).'<br>';
-        echo("TENGO NOTA-->".$nota3).'<br>';
-        $stmt = $this->conexion->prepare("INSERT INTO alumno_asignatura_periodo (COD_PERIODO_LECTIVO,COD_ALUMNO,COD_NIVEL_EDUCATIVO,
-                                                                                COD_ASIGNATURA,COD_PARALELO,COD_DOCENTE,NOTA1,NOTA2,NOTA3) 
-                                          VALUES (?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param('sisssisss',$cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo,$cod_asignatura,$cod_paralelo,$cod_docente,$nota1,$nota2,$nota3);
-        $stmt->execute();
-        $stmt->close();
-    }
-    function prueba($cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo,$cod_asignatura,$cod_paralelo,$cod_docente,$nota1,$nota2,$nota3)
-    {
-        echo("PROBANDO VALORES-->TENGO PERIODO-->".$cod_periodo_lectivo).'<br>';
-        echo("TENGO ALUMNO-->".$cod_alumno).'<br>';
-        echo("TENGO NIVEL-->".$cod_nivel_educativo).'<br>';
-        echo("TENGO ASIGNATURA-->".$cod_asignatura).'<br>';
-        echo("TENGO PARALELO-->".$cod_paralelo).'<br>';
-        echo("TENGO DOCENTE-->".$cod_docente).'<br>';
-        echo("TENGO NOTA-->".$nota1).'<br>';
-        echo("TENGO NOTA-->".$nota2).'<br>';
-        echo("TENGO NOTA-->".$nota3).'<br>';
-        $stmt = $this->conexion->prepare("INSERT INTO alumno_asignatura_periodo (COD_PERIODO_LECTIVO,COD_ALUMNO,COD_NIVEL_EDUCATIVO,
-                                                                                COD_ASIGNATURA,COD_PARALELO,COD_DOCENTE,NOTA1,NOTA2,NOTA3) 
-                                          VALUES (?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param('sisssisss',$cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo,$cod_asignatura,$cod_paralelo,$cod_docente,$nota1,$nota2,$nota3);
+        $stmt = $this->conexion->prepare("INSERT INTO alumno_asignatura_periodo (COD_PERIODO_LECTIVO,COD_ALUMNO,COD_NIVEL_EDUCATIVO, 
+        COD_ASIGNATURA,COD_PARALELO,COD_DOCENTE,NOTA1,NOTA2,NOTA3)
+        VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param('sisssiddd',$cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo,$cod_asignatura,$cod_paralelo,$cod_docente,$nota1,$nota2,$nota3);
         $stmt->execute();
         $stmt->close();
     }
 }
-
-/**INSERT INTO `alumno_asignatura_periodo` (`COD_PERIODO_LECTIVO`, `COD_ALUMNO`, `COD_NIVEL_EDUCATIVO`, `COD_ASIGNATURA`,
- `COD_PARALELO`, `COD_DOCENTE`, `NOTA1`, `NOTA2`, `NOTA3`, `NOTA4`, `NOTA5`, `NOTA6`, `NOTA7`, `NOTA8`,
-  `NOTA9`, `NOTA10`, `NOTA11`, `NOTA12`, `NOTA13`, `NOTA14`, `NOTA15`) 
-  VALUES ('SEP20-JUL21', '8', 'TERCERO', 'ASBI01', 'TER - A', '6', '12', '11', '10', 
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);**/

@@ -25,7 +25,7 @@
 			header('Location: ./intranet/User_Alumno/UserAlumno.html');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '6') {
-			header('Location: ./intranet/User_Representante/UserRepresentante.php');
+			header('Location: ./intranet/User_Representante/UserRepresentanteAsistencias.php');
 		}
 	}
 

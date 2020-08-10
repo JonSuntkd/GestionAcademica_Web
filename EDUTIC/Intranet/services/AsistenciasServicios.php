@@ -36,4 +36,18 @@ class AsistenciasServicios extends MainService
         $stmt->execute();
         $stmt->close();
     }
+
+    //PARA VISUALIZAR DEL ESTUDIANTE
+    function asignaturasEstudiante($cod_alumno,$cod_periodo_lectivo)
+    {
+        return $this->conexion->query("SELECT asignatura_periodo.COD_ASIGNATURA,asignatura.NOMBRE
+        FROM asignatura_periodo
+        INNER JOIN matricula_periodo ON matricula_periodo.COD_NIVEL_EDUCATIVO = asignatura_periodo.COD_NIVEL_EDUCATIVO
+        INNER JOIN asignatura ON asignatura.COD_ASIGNATURA = asignatura_periodo.COD_ASIGNATURA
+        WHERE matricula_periodo.COD_ALUMNO='".$cod_alumno."' AND matricula_periodo.COD_PERIODO_LECTIVO = '".$cod_periodo_lectivo."'");
+    }
+    function asistenciasEstudiante($cod_alumno)
+    {
+        return $this->conexion->query("SELECT COD_NIVEL_EDUCATIVO,FECHA,ESTADO FROM asistencia_periodo WHERE COD_ALUMNO='".$cod_alumno."'");
+    }
 }

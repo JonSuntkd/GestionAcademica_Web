@@ -58,4 +58,23 @@ class TareaServicios extends MainService
         $stmt->execute();
         $stmt->close();
     }
+    function ingresarComunicado($cod_nivel_educativo,$cod_asignatura,$cod_periodo_lectivo,$cod_paralelo,$cod_docente,$titulo_comunicado,$detalle_comunicado,$fecha_entrega,$archivo)
+    {
+        $stmt = $this->conexion->prepare("INSERT INTO comunicado_asignatura (COD_NIVEL_EDUCATIVO,COD_ASIGNATURA,COD_PERIODO_LECTIVO 
+        ,COD_PARALELO,COD_DOCENTE,DETALLE_COMUNICADO,TITULO_COMUNICADO,FECHA_COMUNICADO,ARCHIVO)
+        VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param('ssssissss',$cod_nivel_educativo,$cod_asignatura,$cod_periodo_lectivo,$cod_paralelo,$cod_docente,$detalle_comunicado,$titulo_comunicado,$fecha_entrega,$archivo);
+        $stmt->execute();
+        $stmt->close();
+    }
+    function verificarComunicado($cod_alumno)
+    {
+        $result = $this->conexion->query("SELECT comunicado_asignatura.TITULO_COMUNICADO,comunicado_asignatura.DETALLE_COMUNICADO,
+                                    comunicado_asignatura.FECHA_COMUNICADO,asignatura.IMAGEN,asignatura.NOMBRE,comunicado_asignatura.COD_COMUNICADO,comunicado_asignatura.ARCHIVO
+                                          FROM comunicado_asignatura
+                                          INNER JOIN matricula_periodo ON comunicado_asignatura.COD_NIVEL_EDUCATIVO = matricula_periodo.COD_NIVEL_EDUCATIVO
+                                          INNER JOIN asignatura ON comunicado_asignatura.COD_ASIGNATURA = asignatura.COD_ASIGNATURA
+                                          WHERE matricula_periodo.COD_ALUMNO='".$cod_alumno."'");
+        return $result;
+    }
 }

@@ -1,11 +1,23 @@
 <?php
-    include '../services/AsistenciasServicios.php';
-    $asistencia = new AsistenciasServicios();
+    include '../services/RolServicios.php';
+    $rol = new RolServicios();
+    $cedula="";
+ 
+    $user="";
+    $password="";
+    $errors = '';
     session_start();
+
     $cod_docente=$_SESSION['user']['COD_PERSONA'];
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
+
+    if(isset($_GET['encontrarPersona']))
+    {
+        $cedula=$_GET['cedula'];
+    }
+
     $accion="Aceptar";
    
     $fecha = date("Y-m-d H:i:s"); // 2001-03-10 17:16:18 (el formato DATETIME de MySQL)
@@ -101,7 +113,7 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small> Docente - Asistencias</small></h1>
+                <h1 class="all-tittles">EduTic <small> Super Usuario - Gestion de Roles</small></h1>
             </div>
         </div>
 
@@ -109,7 +121,7 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Asistencias</li>
+                        <li class="active">Asignación de Roles por Persona</li>
                     </ol>
                 </div>
             </div>
@@ -117,151 +129,123 @@
 
         <section class="full-reset text-center" style="padding: 40px 0;">
 
-            <div class="container-fluid">
-                <div class="container-flat-form">
-                    <div class="title-flat-form title-flat-blue">Registrar Asistencias</div>
-                    <form method="post">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                
-                            <div class="group-material">
-                                    <span style="color: #E34724;"><h2>Seleccione el periodo lectivo</h2></span> 
-                                    <select class="form-control" name="periodo">
-                                        <option value="" disabled="" selected="">Selecciona el periodo</option>
-                                            <?php 
-                                                $result = $asistencia->periodo();
-                                                foreach($result as $opciones):
-                                            ?>
-                                        <option value="<?php echo $opciones['COD_PERIODO_LECTIVO'] ?>"><?php echo $opciones['COD_PERIODO_LECTIVO'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">
+                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;">Ingrese la cédula de la persona</a>
+                </div>
+                <div class="row">
+                    <div class="grou-material col-md-4 mb-5"></div>
+                    <form action="" method="get">
+                            <div class="row">
+                                <div class="group-material col-md-4 mb-5">
+                                    <input type="text" class="material-control" placeholder="Cedula de la persona" required="" 
+                                        data-toggle="tooltip" data-placement="top" title="Escriba la cédula de la persona a buscar" 
+                                        name="cedula">
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
+                                    <label for="cedula" class="col-md-6">Cédula de la Persona</label><br>  
+                                    <input type="submit" value="Aceptar" name="encontrarPersona">
+                                </div>
                             </div>
-
-                            <div class="group-material">
-                                    <span style="color: #E34724;"><h2>Seleccione la asignatura</h2></span> 
-                                    <select class="form-control" name="asignatura">
-                                        <option value="" disabled="" selected="">Selecciona la asignatura</option>
-                                            <?php 
-                                                $result = $asistencia->docenteAsistencia($cod_docente);
-                                                foreach($result as $opciones):
-                                            ?>
-                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO']?>|<?php echo $opciones['COD_ASIGNATURA']?>|<?php echo $opciones['COD_PARALELO']?>"><?php echo $opciones['NOMBRE'] ?>--<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                            </div>
-
-                            <div class="group-material">
-                                    <span style="color: #E34724;"><h2>Seleccione el quimestre</h2></span> 
-                                    <select class="form-control" name="quimestre">
-                                        <option value="" disabled="" selected="">Selecciona el quimestre</option>
-                                        <option value="PROMEDIOQ1">Primer Quimestre</option>
-                                        <option value="PROMEDIOQ2">Segundo Quimestre</option>
-                                    </select>
-                            </div>
-                                <p class="text-center">
-                                    <input type="submit" name="accionAsistencia" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
-                                    <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
-                                            class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                </p>
-                            </div>
-                        </div>
                     </form>
                 </div>
-            </div>
-        
-          <div class="container-fluid">
-            <?php
-                if(isset($_POST['accionAsistencia']) && ($_POST['accionAsistencia']=='Aceptar'))
-                {
-                    $valores = $_POST['asignatura'];
-                    $result_explode = array_map('trim',explode('|',$valores));                    
-                    $cod_nivel_educativo = $result_explode[0];
-                    $cod_asignatura = $result_explode[1];
-                    $cod_paralelo = $result_explode[2];
-                    $cod_periodo_lectivo = $_POST['periodo'];
-            ?>
-                    <form action="" method="post" id="registroAsistencia" name="registroAsistencia">
-                        <input type="hidden" name="cod_nivel_educativo" value="<?php echo $cod_nivel_educativo ?>">
-                        <input type="hidden" name="cod_asignatura" value="<?php echo $cod_asignatura ?>">
-                        <input type="hidden" name="cod_paralelo" value="<?php echo $cod_paralelo ?>">
-                        <input type="hidden" name="cod_periodo_lectivo" value="<?php echo $cod_periodo_lectivo ?>">
-                        <input type="hidden" name="fecha" value="<?php echo $fecha ?>">
+                
+            <form action="" method="post" id="gestionRol" name="gestionRol">
 
-            <?php
-                    // Establecer la zona horaria predeterminada a usar. Disponible desde PHP 5.1 
-                    date_default_timezone_set('America/Bogota');
-
-                    // Imprime algo como: Monday 8th of August 2005 03:12:46 PM
-                    echo date('l jS \of F Y h:i:s A');
-            ?>
+                    <input type="hidden" name="cod_periodo_lectivo" value="<?php echo $cod_periodo_lectivo ?>">
 
 
-
-                    <div class="table-responsive">
-                        <table id="tablaEstudiantesAsistencias" class="table-striped table-bordered table-condensed" style="width: 100%;">
+                <div class="row container-flat-form">
+                        <div class="table-responsive">
+                            <table id="tablaPersonas" class="table-striped table-bordered table-condensed" style="width: 100%;">
                                <thead class="text-center">
-                                    <br>
                                     <tr>
-                                        <th>Apellido</th>
-                                        <th>Nombre</th>
-                                        <th>Asistencia</th>
-                                        <th>Falta Justificada</th>
-                                        <th>Falta Injustificada</th>
+                                        <th>Cédula de la persona</th>
+                                        <th>Apellidos</th>
+                                        <th>Nombres</th>
+                                        <th>Asignar Rol</th>
+                                        <th>Nombre Usuario</th>
+                                        <th>Clave</th>
+                                        <th>Estado</th>
                                     </tr>
                                </thead>
                                <tbody>
                                     <?php
-                                        $contador=0;
-                                        $result = $asistencia->listarEstudiantes($cod_nivel_educativo);
+                                        $result = $rol->mostrarPersonaCedula($cedula);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
                                             {     
                                     ?>
                                     <tr>
-                                        <!--DATOS DE LA TABLA ASISTENCIAS-->
+                                        <!--DATOS DE LA TABLA EDIFICIOS-->
+                                        <td><?php echo $row ["CEDULA"];?></td>
                                         <td><?php echo $row ["APELLIDO"];?></td>
                                         <td><?php echo $row ["NOMBRE"];?></td>
-                                        <td>
-                                            <input type="radio" name="asistencias[<?php echo $contador ?>][estado]" id="estado" value="ASI">
+                                        <td> 
+                                            <div class="form-group row col-sm-12" id="roles">
+                                                <select class="form-control" name="rol">
+                                                    <option value="" disabled="" selected="">Selecciona un Rol</option>
+                                                    <option value="2">Directivo</option>
+                                                    <option value="3">Administrativo</option>
+                                                    <option value="4">Docente</option>
+                                                    <option value="5">Alumno</option>
+                                                    <option value="6">Representante</option>
+                                                </select>
+
+                                            </div>
                                         </td>
                                         <td>
-                                            <input type="radio" name="asistencias[<?php echo $contador ?>][estado]" id="estado" value="JUS">
+                                            <input type="text" name="user[<?php echo $contador ?>][user]" id="user" value="">
                                         </td>
                                         <td>
-                                            <input type="radio" name="asistencias[<?php echo $contador ?>][estado]" id="estado" value="INJ">
+                                            <input type="text" name="password[<?php echo $contador ?>][password]" id="password" value="">
                                         </td>
-                                        <input type="hidden" name="cod_alumno[]" value="<?php echo $row['COD_PERSONA'] ?>">
+                                        <td> 
+                                            <div class="form-group row col-sm-12" id="estados">
+                                                <select class="form-control" name="estado">
+                                                    <option value="" disabled="" selected="">Selecciona un Estado</option>
+                                                    <option value="ACT">ACTIVO</option>
+                                                    <option value="INA">INACTIVO</option>
+                                                </select>
+
+                                            </div>
+                                        </td>
                                     </tr>
-                                    <?php   $contador ++;
-                                            } 
+                                    <?php   } 
                                         } 
                                         else
                                         {
                                     ?>
                                     <tr>
-                                        <td colspan="5">NO HAY DATOS EN LA TABLA</td>
+                                        <td colspan=7>No hay datos en la tabla</td>
                                     </tr>        
                                     <?php } ?>
                                 </tbody> 
                             </table>
                         </div>
                         <br>
-                        <input type="submit" name="accionAsis" value="Hecho" class="btn btn-primary" style="margin-right: 20px;" >
-                    </form>
-                <?php
-                } ?>              
-            
-         
+                        <input type="submit" name="accionRoles" value="Hecho" class="btn btn-primary" style="margin-right: 20px;" >
+                    </div>
+                </form>                                            
             <?php
-                    if(isset($_POST['accionAsis'])&& ($_POST['accionAsis']=='Hecho'))
+                    
+                    if(isset($_POST['accionRoles'])&& ($_POST['accionRoles']==2)){
+                        $errors .= "EL USUARIO YA EXISTE";
+                        
+                    }else if (isset($_POST['accionRoles'])&& ($_POST['accionRoles']=='Hecho'))
                     {
-                        $codigo_alumno = $_POST['cod_alumno'];
-                        $asistencias = $_POST['asistencias'];
-                        foreach (array_combine($codigo_alumno, $asistencias) as $alumno => $asistencias) 
+                        
+                        $cod_persona = $_POST['cod_persona'];
+                        $rol = $_POST['rol'];
+                        $user = $_POST['user'];
+                        $password = $_POST['password'];
+                        $estado = $_POST['estado']; 
+
+                        foreach (array_combine($cod_persona, $rol) as $persona => $rol) 
                         {
-                            $asistencia->ingresarAsistencia($_POST['cod_periodo_lectivo'],$alumno,$_POST['cod_nivel_educativo'],
-                                                         $_POST['fecha'],$asistencias['estado']);
+                            $rol->ingresarRol($rol['estado'],$persona,$user['user'],$password['password'],$estado['estado']);
                         }
                     }
             ?>

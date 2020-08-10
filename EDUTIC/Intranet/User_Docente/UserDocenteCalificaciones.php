@@ -55,7 +55,7 @@
                 <ul class="list-unstyled">
                     <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                    <li><a href="./UserDocenteCalificaciones.html">
+                    <li><a href="./UserDocenteCalificaciones.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Calificaciones</a></li>
@@ -63,8 +63,8 @@
                             <i class="zmdi zmdi-face zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Faltas</a></li>
-                    <li><a href="./UserDocenteTareas.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
+                    <li><a href="./UserDocenteTareas.php">
+                            <i class="zmdi zmdi-file zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Tareas</a></li>
                     <li><a href="./UserDocenteComunicados.html">
@@ -147,11 +147,10 @@
                                                 $result = $calificacion->docenteCalificacion($cod_docente);
                                                 foreach($result as $opciones):
                                             ?>
-                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO']?>|<?php echo $opciones['COD_ASIGNATURA']?>|<?php echo $opciones['COD_PARALELO']?>"><?php echo $opciones['NOMBRE'] ?>--<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?></option>
+                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO']?>|<?php echo $opciones['COD_ASIGNATURA']?>|<?php echo $opciones['COD_PARALELO']?>"><?php echo $opciones['NOMBRE'] ?>--<?php echo $opciones['NOMPARALELO'] ?></option>
                                         <?php endforeach ?>
                                     </select>
                             </div>
-
                             <div class="group-material">
                                     <span style="color: #E34724;"><h2>Seleccione el quimestre</h2></span> 
                                     <select class="form-control" name="quimestre">
@@ -181,12 +180,14 @@
                     $cod_asignatura = $result_explode[1];
                     $cod_paralelo = $result_explode[2];
                     $cod_periodo_lectivo = $_POST['periodo'];
+                    $quimestre=$_POST['quimestre'];
             ?>
                     <form action="" method="post" id="registroNotas" name="registroNotas">
                         <input type="hidden" name="cod_nivel_educativo" value="<?php echo $cod_nivel_educativo ?>">
                         <input type="hidden" name="cod_asignatura" value="<?php echo $cod_asignatura ?>">
                         <input type="hidden" name="cod_paralelo" value="<?php echo $cod_paralelo ?>">
                         <input type="hidden" name="cod_periodo_lectivo" value="<?php echo $cod_periodo_lectivo ?>">
+                        <input type="hidden" name="quimestre" value="<?php echo $quimestre ?>">
             <?php
             ?>
                   
@@ -204,7 +205,7 @@
                                <tbody>
                                     <?php
                                         $contador=0;
-                                        $result = $calificacion->listarEstudiantes($cod_nivel_educativo);
+                                        $result = $calificacion->listarEstudiantes($cod_nivel_educativo,$cod_periodo_lectivo);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
@@ -245,7 +246,7 @@
             
         
             <?php
-                    if(isset($_POST['accionNotas'])&& ($_POST['accionNotas']=='Hecho'))
+                    if(isset($_POST['accionNotas'])&& ($_POST['accionNotas']=='Hecho') &&($_POST['quimestre']=='PROMEDIOQ1'))
                     {
                         $codigo_alumno = $_POST['cod_alumno'];
                         $notas = $_POST['notas'];
@@ -254,9 +255,23 @@
                             $calificacion->ingresarNotas($_POST['cod_periodo_lectivo'],$alumno,$_POST['cod_nivel_educativo'],
                                                          $_POST['cod_asignatura'],$_POST['cod_paralelo'],$cod_docente,$notas['nota1'],
                                                          $notas['nota2'],$notas['nota3']);
+                            $calificacion->promedioQuimestral1($_POST['cod_periodo_lectivo'],$alumno,$_POST['cod_nivel_educativo'],
+                                                               $notas['nota1'],$notas['nota2'],$notas['nota3']);
                         }
                     }
-        ?>
+                    else if(isset($_POST['accionNotas'])&& ($_POST['accionNotas']=='Hecho')&&($_POST['quimestre']=='PROMEDIOQ2'))
+                    {
+                        $codigo_alumno = $_POST['cod_alumno'];
+                        $notas = $_POST['notas'];
+                        foreach (array_combine($codigo_alumno, $notas) as $alumno => $notas) 
+                        {
+                            $calificacion->ingresarNotas2($alumno,$_POST['cod_asignatura'],$notas['nota1'],
+                                                         $notas['nota2'],$notas['nota3']);
+                            $calificacion->promedioQuimestral2($_POST['cod_periodo_lectivo'],$alumno,$_POST['cod_nivel_educativo'],
+                                                            $notas['nota1'],$notas['nota2'],$notas['nota3']);
+                        }
+                    }
+            ?>
 
         </div>
         </section>

@@ -8,11 +8,11 @@ class AsignaturaServicios extends MainService
     {
         return $this->conexion->query("SELECT * FROM asignatura WHERE COD_NIVEL_EDUCATIVO='".$nivel."'");
     }
-    function insertarAsignatura($cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo)
+    function insertarAsignatura($cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo,$imagen)
     {
-        $stmt = $this->conexion->prepare("INSERT INTO asignatura(COD_NIVEL_EDUCATIVO,COD_ASIGNATURA,NOMBRE,CREDITOS,TIPO) 
-                                          VALUES (?,?,?,?,?)");
-        $stmt->bind_param('sssis',$cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo);
+        $stmt = $this->conexion->prepare("INSERT INTO asignatura(COD_NIVEL_EDUCATIVO,COD_ASIGNATURA,NOMBRE,CREDITOS,TIPO,IMAGEN) 
+                                          VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param('sssiss',$cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo,$imagen);
         $stmt->execute();
         $stmt->close();
     }

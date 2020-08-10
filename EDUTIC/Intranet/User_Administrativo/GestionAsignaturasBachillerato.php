@@ -9,8 +9,13 @@
 
     if(isset($_POST['accionAsignatura']) && ($_POST['accionAsignatura']=='Añadir'))
     {
+        $imagen = $_FILES['imagen_asignatura']['name'];
+        $archivo = $_FILES['imagen_asignatura']['tmp_name'];
+        $ruta = "../assets/img/".$imagen;
+        move_uploaded_file($archivo,$ruta);
+      
         $asignatura->insertarAsignatura($_POST['cod_nivel_educativo'],$_POST['codigo_asignatura'],$_POST['nombre_asignatura'],
-                                        $_POST['creditos_asignatura'],$_POST['tipo_asignatura']);
+                                        $_POST['creditos_asignatura'],$_POST['tipo_asignatura'],$imagen);
     }
 ?>
 
@@ -178,7 +183,7 @@
                     <div class="grou-material col-md-2 mb-5">
 
                     </div>
-                    <form name="asignaturasForm" id="asignaturasForm" method="post">
+                    <form name="asignaturasForm" id="asignaturasForm" method="post" enctype="multipart/form-data">
                         <div class="group-material col-md-8 mb-5 ml-4">
                             <span style="color: #E34724;"><h2>Seleccione un nivel</h2></span>
                             <select id="cod_nivel_educativo" name="cod_nivel_educativo" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
@@ -230,6 +235,14 @@
                                     <option value="PRO">Institucional</option>
                                     <option value="OTR">Otra</option>
                                 </select>
+                            </div>
+                            <div class="group-material">
+                                <input type="file" class="material-control tooltips-general"
+                                    placeholder="Imagen de la asignatura" required="" data-toggle="tooltip" data-placement="top"
+                                    title="Ingrese una imagen de la asignatura" name="imagen_asignatura" value="">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Imagen de la Asignatura</label>
                             </div>
                             <p class="text-center">
                                 <input type="submit" name="accionAsignatura" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >

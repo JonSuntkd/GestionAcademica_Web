@@ -90,6 +90,24 @@ class MatriculaServicios extends MainService
         $stmt->execute();
         $stmt->close();
     }
+
+    //MATRICULAS PARA ANTIGUOS
+    function encontrarAlumnos($periodo,$nivel)
+    {
+        return $this->conexion->query("SELECT persona.COD_PERSONA,persona.DIRECCION, persona.NOMBRE, persona.APELLIDO
+                                       FROM persona
+                                       INNER JOIN matricula_periodo ON matricula_periodo.COD_ALUMNO = persona.COD_PERSONA
+        WHERE matricula_periodo.COD_PERIODO_LECTIVO='".$periodo."' AND matricula_periodo.COD_NIVEL_EDUCATIVO='".$nivel."'");
+    }
+    function matricularAlumnos($cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo)
+    {
+        $stmt = $this->conexion->prepare("INSERT INTO matricula_periodo (COD_PERIODO_LECTIVO,COD_ALUMNO,COD_NIVEL_EDUCATIVO) 
+                                          VALUES (?,?,?)");
+        $stmt->bind_param('sss',$cod_periodo_lectivo,$cod_alumno,$cod_nivel_educativo);
+        $stmt->execute();
+        $stmt->close();
+        
+    }
 }
 
 ?>

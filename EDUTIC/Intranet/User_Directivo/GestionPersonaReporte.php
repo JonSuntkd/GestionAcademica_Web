@@ -1,7 +1,10 @@
 <?php
     include '../services/PersonaServicios.php';
     
-    
+      session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
     $persona = new PersonaServicios();
     $cedula="";
     
@@ -53,7 +56,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDirectivo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                   <li><a href="./UserDirectivo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
                 
@@ -68,9 +71,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Directivo</span>
+                    <span class="all-tittles">Directivo - <?php echo $_SESSION['user']['NOMBRE_USUARIO']?> </span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

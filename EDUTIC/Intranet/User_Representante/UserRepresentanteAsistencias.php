@@ -1,14 +1,20 @@
-<?php
+<?php 
     include '../services/AsistenciasServicios.php';
     $asistencias = new AsistenciasServicios();
     session_start();
 
-    $cod_alumno=$_SESSION['user']['COD_PERSONA'];
+    $cod_representante=$_SESSION['user']['COD_PERSONA'];
+    $datos = $asistencias->datosEstudiante($cod_representante);
+    $row = $datos->fetch_assoc();
+    $codigo_estudiante = $row['COD_PERSONA']; 
+    $nombre = $row['NOMBRE'];
+    $apellido = $row['APELLIDO'];
+    
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
-    $accion="Aceptar";
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -90,14 +96,14 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small>Representante - Asistencias</small></h1>
+                <h1 class="all-tittles">EduTic <small>Representante - Asistencias del Estudiante</small></h1>
             </div>
         </div>
 
         <section class="full-reset text-center" style="padding: 40px 0;">
             <div class="container-fluid">
                 <div class="container-flat-form">
-                    <div class="title-flat-form title-flat-blue">Verificar Asistencias Quimestrales</div>
+                    <div class="title-flat-form title-flat-blue">Verificar Asistencias Quimestrales de <?php echo $nombre  ?>&nbsp;<?php echo $apellido ?></div>
                     <form action="" method="post">
                         <div class="row">
                             <div class="group-material col-xs-12 col-sm-8 col-sm-offset-2">
@@ -135,7 +141,7 @@
             <?php
                 if(isset($_POST['accionCalificacionTotal']) && ($_POST['accionCalificacionTotal']=='Aceptar')&& ($_POST['quimestre']=='QUIMESTRE1'))
                 {
-                    $cod_periodo_lectivo = $_POST['periodo'];
+                    $periodo = $_POST['periodo'];
             ?>
             <?php
             ?> 
@@ -150,7 +156,7 @@
                                </thead>
                                <tbody>
                                     <?php
-                                        $result = $asistencias->asistenciasEstudiante($cod_alumno);
+                                        $result = $asistencias->asistenciasEstudiante($codigo_estudiante,$periodo);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
@@ -182,7 +188,7 @@
             <?php
                 if(isset($_POST['accionCalificacionTotal']) && ($_POST['accionCalificacionTotal']=='Aceptar')&& ($_POST['quimestre']=='QUIMESTRE2'))
                 {
-                    $cod_periodo_lectivo = $_POST['periodo'];
+                    $periodo = $_POST['periodo'];
             ?>
             <?php
             ?> 
@@ -197,7 +203,7 @@
                                </thead>
                                <tbody>
                                     <?php
-                                        $result = $asistencias->asistenciasEstudiante($cod_alumno);
+                                        $result = $asistencias->asistenciasEstudiante($codigo_estudiante,$periodo);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())

@@ -50,4 +50,11 @@ class AsistenciasServicios extends MainService
     {
         return $this->conexion->query("SELECT COD_NIVEL_EDUCATIVO,FECHA,ESTADO FROM asistencia_periodo WHERE COD_ALUMNO='".$cod_alumno."'");
     }
+
+    //PARA VISUALiZAR EN EL REPRESENTANTE
+    function datosEstudiante($cod_representante)
+    {
+        return $this->conexion->query("SELECT COD_PERSONA,APELLIDO,NOMBRE FROM persona 
+        WHERE COD_PERSONA_REPRESENTANTE='".$cod_representante."'");
+    }
 }

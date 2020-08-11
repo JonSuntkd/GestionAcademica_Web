@@ -135,7 +135,7 @@
             <?php
                 if(isset($_POST['accionCalificacionTotal']) && ($_POST['accionCalificacionTotal']=='Aceptar')&& ($_POST['quimestre']=='QUIMESTRE1'))
                 {
-                    $cod_periodo_lectivo = $_POST['periodo'];
+                    $periodo = $_POST['periodo'];
             ?>
             <?php
             ?> 
@@ -150,7 +150,7 @@
                                </thead>
                                <tbody>
                                     <?php
-                                        $result = $asistencias->asistenciasEstudiante($cod_alumno);
+                                        $result = $asistencias->asistenciasEstudiante($cod_alumno,$periodo);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
@@ -182,7 +182,7 @@
             <?php
                 if(isset($_POST['accionCalificacionTotal']) && ($_POST['accionCalificacionTotal']=='Aceptar')&& ($_POST['quimestre']=='QUIMESTRE2'))
                 {
-                    $cod_periodo_lectivo = $_POST['periodo'];
+                    $periodo = $_POST['periodo'];
             ?>
             <?php
             ?> 
@@ -197,7 +197,7 @@
                                </thead>
                                <tbody>
                                     <?php
-                                        $result = $asistencias->asistenciasEstudiante($cod_alumno);
+                                        $result = $asistencias->asistenciasEstudiante($cod_alumno,$periodo);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())

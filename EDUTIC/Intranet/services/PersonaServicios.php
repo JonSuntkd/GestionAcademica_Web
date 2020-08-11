@@ -64,6 +64,43 @@ class PersonaServicios extends MainService
         $stmt->execute();
         $stmt->close();
     }
+
+    //USUARIOS
+    function añadirUsuario ($cod_persona,$nombre,$apellido,$clave,$estado)
+    {
+        $estado='ACT';
+        $intentos = 0;
+        $result_explode=array_map('trim',explode(' ',$nombre));
+        $primer_nombre = $result_explode[0];
+        $result_explode = array_map('trim',explode(' ',$apellido));
+        $primer_apellido = $result_explode[0];
+        $usuario = $primer_nombre." ".$primer_apellido;
+        $stmt= $this->conexion->prepare("INSERT INTO usuario (COD_PERSONA,NOMBRE_USUARIO,CLAVE,ESTADO,INTENTOS_FALLIDOS)
+                                         VALUES (?,?,?,?,?)");
+        $stmt->bind_param('isssi',$cod_persona,$usuario,$clave,$estado,$intentos);
+        $stmt->execute();
+        $stmt->close();
+    }
+    function encontrarUsuario($cod_persona)
+    {
+        $result = $this->conexion->query("SELECT * FROM usuario WHERE COD_PERSONA='".$cod_persona."'");
+        if($result->num_rows>0)
+        {
+            return $result->fetch_assoc();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    function añadirRolUsuario($cod_rol,$cod_usuario,$estado)
+    {
+        $stmt = $this->conexion->prepare("INSERT INTO rol_usuario(COD_ROL,COD_USUARIO,ESTADO) 
+                                          VALUES (?,?,?)");
+        $stmt->bind_param('sis',$cod_rol,$cod_usuario,$estado);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 ?>

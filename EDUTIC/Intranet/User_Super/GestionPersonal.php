@@ -22,6 +22,14 @@ $tipo_persona="tipo_persona";
             $estado = "ACT";
             $fecha_inicio = "";
             $persona->añadirTipoPersonal($cod_tipo_persona,$cod_persona,$estado,$fecha_inicio);
+            $persona->añadirUsuario($result['COD_PERSONA'],$result['NOMBRE'],$result['APELLIDO'],$result['CEDULA'],$estado);
+            $result2 = $persona->encontrarUsuario($cod_persona);
+            if($result2!=null)
+            {
+                $cod_usuario = $result2['COD_USUARIO'];
+                $estado2='ACT';
+                $persona->añadirRolUsuario($cod_tipo_persona,$cod_usuario,$estado);
+            }
         }
     }
 

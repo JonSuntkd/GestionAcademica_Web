@@ -24,6 +24,14 @@ $representante="REP";
             $estado = "ACT";
             $fecha_inicio = "";
             $persona->añadirTipoPersonal($representante,$cod_representante,$estado,$fecha_inicio);
+            $persona->añadirUsuario($result['COD_PERSONA'],$result['NOMBRE'],$result['APELLIDO'],$result['CEDULA'],$estado);
+            $result3 = $persona->encontrarUsuario($cod_representante);
+            if($result3!=null)
+            {
+                $cod_usuario = $result3['COD_USUARIO'];
+                $estado3='ACT';
+                $persona->añadirRolUsuario($representante,$cod_usuario,$estado);
+            }
             //AÑADO ESTUDIANTE
             $persona->añadirEstudiante($cod_representante,$_POST['cedula_estudiante'],$_POST['apellido_estudiante'],$_POST['nombre_estudiante'],
             $_POST['direccion_estudiante'],$_POST['telefono_estudiante'],$_POST['fecha_nacimiento_estudiante'],
@@ -37,6 +45,14 @@ $representante="REP";
             $estado_estudiante="ACT";
             $fecha_ini_estudiante="";
             $persona->añadirTipoPersonal($estudiante,$cod_estudiante,$estado_estudiante,$fecha_ini_estudiante);
+            $persona->añadirUsuario($result2['COD_PERSONA'],$result2['NOMBRE'],$result2['APELLIDO'],$result2['CEDULA'],$estado);
+            $result4 = $persona->encontrarUsuario($cod_estudiante);
+            if($result4!=null)
+            {
+                $cod_usuario = $result4['COD_USUARIO'];
+                $estado4='ACT';
+                $persona->añadirRolUsuario($estudiante,$cod_usuario,$estado);
+            }
         }
     }
 

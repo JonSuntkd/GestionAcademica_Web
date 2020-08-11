@@ -9,22 +9,22 @@
 			$_SESSION["user"] = $row;
 			//header('Location: ./intranet/User_Administrativo/GestionInfraestructura.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '1') {
+		if ($_SESSION['user']['COD_ROL'] == 'SUP') {
 			header('Location: ./intranet/User_Super/GestionPersonal.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '2') {
+		if ($_SESSION['user']['COD_ROL'] == 'DIR') {
 			header('Location: ./intranet/User_Directivo/UserDirectivo.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '3') {
+		if ($_SESSION['user']['COD_ROL'] == 'ADM') {
 			header('Location: ./intranet/User_Administrativo/UsuarioAdministrativo.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '4') {
+		if ($_SESSION['user']['COD_ROL'] == 'PRO') {
 			header('Location: ./intranet/User_Docente/UserDocente.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '5') {
+		if ($_SESSION['user']['COD_ROL'] == 'EST') {
 			header('Location: ./intranet/User_Alumno/UserAlumnoTareas.php');
 		}
-		if ($_SESSION['user']['COD_ROL'] == '6') {
+		if ($_SESSION['user']['COD_ROL'] == 'REP') {
 			header('Location: ./intranet/User_Representante/UserRepresentante.php');
 		}
 	}

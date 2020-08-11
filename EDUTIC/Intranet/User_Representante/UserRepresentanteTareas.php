@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
     include '../services/TareaServicios.php';
     $tarea = new TareaServicios();
     session_start();

@@ -2,23 +2,35 @@
 
 include 'MainService.php';
 
-class AspiranteServicios extends MainService
+class ReporteServicios extends MainService
 {
-    function mostrarAspirante($nombreEntidad)
-    {
-        return $this->conexion->query("SELECT * FROM ".$nombreEntidad);
-    }
-
-
-    function mostrarAspiranteNotas($cod_nivel_educativo,$cod_periodo_lectivo)
-    {
-        return $this->conexion->query("SELECT * FROM aspirante WHERE COD_NIVEL_EDUCATIVO='".$cod_nivel_educativo."' AND COD_PERIODO_LECTIVO='".$cod_periodo_lectivo."'");
-    }
-
 
     function periodo()
     {
         return $this->conexion->query("SELECT * FROM periodo_lectivo WHERE ESTADO = 'ACT'");
+    }
+
+    function matricula()
+    {
+        return $this->conexion->query("SELECT persona.APELLIDO, persona.NOMBRE, matricula_periodo.COD_NIVEL_EDUCATIVO, matricula_periodo.COD_PERIODO_LECTIVO 
+                                        FROM persona 
+                                        INNER JOIN matricula_periodo ON persona.COD_PERSONA = matricula_periodo.COD_ALUMNO");
+    }
+    function docentes()
+    {
+        return $this->conexion->query("SELECT persona.APELLIDO, persona.NOMBRE, tipo_persona_persona.ESTADO, tipo_persona_persona.FECHA_INICIO, tipo_persona_persona.FECH_FIN 
+        FROM persona 
+        INNER JOIN tipo_persona_persona 
+        ON persona.COD_PERSONA = tipo_persona_persona.COD_PERSONA 
+        WHERE tipo_persona_persona.COD_TIPO_PERSONA='PRO'");
+    }
+    function alumnos()
+    {
+        return $this->conexion->query("SELECT persona.APELLIDO, persona.NOMBRE, tipo_persona_persona.ESTADO, tipo_persona_persona.FECHA_INICIO, tipo_persona_persona.FECH_FIN 
+        FROM persona 
+        INNER JOIN tipo_persona_persona 
+        ON persona.COD_PERSONA = tipo_persona_persona.COD_PERSONA 
+        WHERE tipo_persona_persona.COD_TIPO_PERSONA='EST'");
     }
 
     function mostrarAspiranteCalificacione()
@@ -29,7 +41,8 @@ class AspiranteServicios extends MainService
         aspirante.CORREO_PERSONAL, calificacion_prueba_aspirante.CALIFICACION, 
         calificacion_prueba_aspirante.ESTADO 
         FROM aspirante 
-        INNER JOIN calificacion_prueba_aspirante ON aspirante.COD_ASPIRANTE = calificacion_prueba_aspirante.COD_ASPIRANTE 
+        INNER JOIN calificacion_prueba_aspirante 
+        ON aspirante.COD_ASPIRANTE = calificacion_prueba_aspirante.COD_ASPIRANTE 
         WHERE calificacion_prueba_aspirante.ESTADO='APR'");
     }
     

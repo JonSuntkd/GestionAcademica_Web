@@ -21,7 +21,7 @@
     //Aspirantes
     if(isset($_POST['accionAspirantes']) && ($_POST['accionAspirantes']=='Añadir'))
     {
-        $aspiranteGestion->insertarAspirantes($_POST['codigo_aspirante'],$_POST['cedula_aspirante'],$_POST['apellido_aspirante'],$_POST['nombre_aspirante'],$_POST['direccion_aspirante'],$_POST['telefono_aspirante'],$_POST['fechanacimiento_aspirante'],$_POST['genero_aspirante'],$_POST['correopersonal_aspirante']);
+        $aspiranteGestion->insertarAspirantes($_POST['codigo_aspirante'],$_POST['codigo_periodo_lectivo'],$_POST['cod_nivel'],$_POST['cedula_aspirante'],$_POST['apellido_aspirante'],$_POST['nombre_aspirante'],$_POST['direccion_aspirante'],$_POST['telefono_aspirante'],$_POST['fechanacimiento_aspirante'],$_POST['genero_aspirante'],$_POST['correopersonal_aspirante']);
     }
     
     
@@ -73,6 +73,9 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="../js/main.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -95,59 +98,18 @@
                 <ul class="list-unstyled">
                     <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
+                            <!--ASPIRANTES-->
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos
-                            Institución <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./institutionAdministrativo.html"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;
-                                    Gestion Sede</a></li>
-                            <li><a href="./GestionEdificios.html"><i class="zmdi zmdi-star-circle"></i>&nbsp;&nbsp;
-                                    Gestion edificios</a></li>
-                            <li><a href="./GestionAulas.html"><i class="zmdi zmdi-pin-account"></i>&nbsp;&nbsp; Gestion
-                                    aulas</a></li>
-                        </ul>
+                        <a href="./GestionAspirantes.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes Registro</a> 
                     </li>
-                    <li>
-                        <!------------------------------------ Organizacion Academica ---------------------------->
 
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Organizacion Academica <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./AnioElectivo.html">
-                                <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; 
-                                Año lectivo</a></li>
-                            <li><a href="./AsignacionAsignaturas.html"><i
-                                        class="zmdi zmdi-male-alt zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                    Asignación de asignaturas</a></li>
-                        </ul>
+                    <li>
+                        <a href="./GestionAspiranteCalificaciones.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Registro de Calificaciones Aspirantes</a> 
                     </li>
                     <li>
-                        <!------------------------------------ Periodo ---------------------------->
-
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Periodo <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./GestionPeriodos.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Gestión de Periodos</a></li>
-                            <li><a href="./AsignacionDocente.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Asignación de Docente</a></li>
-                            <li><a href="./EsquemasEvaluacion.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Esquemas de Evaluación</a></li>
-                        </ul>
+                        <a href="./GestionAspirantesAprovados.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes Aprovados</a> 
                     </li>
-                    <!--ASPIRANTES-->
-                    <li>
-                        <a href="./GestionAspirantes.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes</a> 
-                    </li>
-                    <li><a href="./reportAdministrativo.html"><i
-                        class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes y estadísticas</a>
-                    </li>
+ 
                 </ul>
             </div>
         </div>
@@ -279,6 +241,63 @@
                                 <span class="bar"></span>
                                 <label>Correo personal</label>
                             </div>
+
+                       
+
+                            <div class="group-material">
+                                    <span style="color: #E34724;">Seleccione el periodo lectivo</span> 
+                                    <select name="codigo_periodo_lectivo" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
+                                                             data-original-title="Elige el genero">
+                                                            <option value="" disabled="" selected="">Selecciona un periodo</option>
+                                                                  <?php
+                                                                    $result = $aspiranteGestion->periodo();
+                                                                        if($result->num_rows>0)
+                                                                        {
+                                                                             while($row = $result->fetch_assoc())
+                                                                        { 
+                                                                    ?>
+                                                            <option value="<?php echo $row ["COD_PERIODO_LECTIVO"];?>"><?php echo "{$row ["COD_PERIODO_LECTIVO"]} ";?></option>
+                                                                  <?php } ?>
+                                                                        } 
+                                                                        else
+                                                                        {
+                                                                        ?>
+                                                                            
+                                                                  <?php } 
+                                                                 
+                                                                  ?>
+                                                </select>
+                            </div>
+
+
+
+                                <div class="group-material">
+                                <span style="color: #E34724;">Nivel Educativo</span>
+                            
+                                                <select name="cod_nivel" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
+                                                             data-original-title="Elige el genero">
+                                                            <option value="" disabled="" selected="">Selecciona un nuvel educativo</option>
+                                                                  <?php
+                                                                    $resultNivel = $aspiranteGestion->mostrarniveleducativoAspirante($niveleducativo);
+                                                                        if($resultNivel->num_rows>0)
+                                                                        {
+                                                                             while($row = $resultNivel->fetch_assoc())
+                                                                        { 
+                                                                    ?>
+                                                            <option value="<?php echo $row ["COD_NIVEL_EDUCATIVO"];?>"><?php echo "{$row ["NOMBRE"]} ";?></option>
+                                                                  <?php } ?>
+                                                                        } 
+                                                                        else
+                                                                        {
+                                                                        ?>
+                                                                            
+                                                                  <?php } 
+                                                                 
+                                                                  ?>
+                                                </select>
+                                </div>
+
+
                             <p class="text-center">
                                 <input type="submit" name="accionAspirantes" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
                                 <button type="reset" class="btn btn-info"><i
@@ -293,8 +312,8 @@
 
         <div class="container-fluid">
             <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Listado de Aspirante</div>
-                 <form id="aspirantes" method="post">
+                <div class="title-flat-form title-flat-blue">Listado de Aspirantes</div>
+                <form id="aspirantes" method="post">
                     <div class="row container-flat-form">
                         <div class="table-responsive">
                             <table id="tablaAspirantes" class="table-striped table-bordered table-condensed" style="width: 100%;">
@@ -304,8 +323,6 @@
                                         <th>Apellido</th>
                                         <th>Nombre</th>
                                         <th>Correo personal</th>
-                                        
-                                        <th>Actualizar</th>
                                         <th>Eliminar</th>
                                     </tr>
                                </thead>
@@ -323,14 +340,6 @@
                                             <td><?php echo $row ["APELLIDO"];?></td>
                                             <td><?php echo $row ["NOMBRE"];?></td>
                                             <td><?php echo $row ["CORREO_PERSONAL"];?></td>
-                                            <td>
-                                            
-                                            <input type="text" class="material-control tooltips-general"
-                                            placeholder="Calificacion" required="" data-toggle="tooltip" data-placement="top"
-                                            title="Escriba el correo personal" name="calificacion_aspirante" value="<?php echo $calificacionAspirante ?>">
-                                
-                                            
-                                            </td>
                                             <td>
                                             <div class="text-center">
                                                 <a href="GestionAspirantes.php?eliminarAspirante=<?php echo $row ["COD_ASPIRANTE"];?>#aspirantesForm" class="btn btn-danger" role="button">
@@ -363,112 +372,7 @@
 
 
 
-  <div class="container-fluid">
-            <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">
-                    <a href="#aspirante" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="aspirantes" style="margin-right: 20px; color:white;">Registro Calificaciones Aspitente</a>
-                </div>
-                <form id="aspirantes" method="post">
-                    <div class="row container-flat-form">
-                        <br><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" >
-                            
-                        <div class="group-material">
-                            <span style="color: #E34724;">Nivel Educativo</span>
-                            <select name="niveleducativo_aspirante" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
-                                data-original-title="Elige el genero">
-                                <option value="" disabled="" selected="">Selecciona un nuvel educativo</option>
-                                <?php
-                                $result = $aspiranteGestion->mostrarniveleducativoAspirante($niveleducativo);
-                                if($result->num_rows>0)
-                                {
-                                while($row = $result->fetch_assoc())
-                                    { 
-                                    ?>
-                                 <option value="<?php echo $row ["COD_NIVEL_EDUCATIVO"];?>"><?php echo "{$row ["NOMBRE"]} ",$row ["NIVEL"];?></option>
-                                <?php } ?>
-                                } 
-                                    else
-                                    {
-                                    ?>
-                                    <tr>
-                                    <td>No hay datos en la tabla</td>
-                                    </tr> 
-                                    <?php } ?>
-                            </select>
-                        </div>
-
-
-                        <div class="group-material">
-                            <span style="color: #E34724;">Aspirante</span>
-                            <select name="nombre_aspirante" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
-                                data-original-title="Elige el genero">
-                                <option value="" disabled="" selected="">Selecciona un aspirante</option>
-                                <?php
-                                $result = $aspiranteGestion->mostrarAspirante($aspirante);
-                                if($result->num_rows>0)
-                                {
-                                while($row = $result->fetch_assoc())
-                                    { 
-                                    ?>
-                                 <option value="<?php echo $row ["COD_ASPIRANTE"];?>"><?php echo "{$row ["NOMBRE"]} ",$row ["APELLIDO"];?></option>
-                                <?php } ?>
-                                } 
-                                    else
-                                    {
-                                    ?>
-                                    <tr>
-                                    <td>No hay datos en la tabla</td>
-                                    </tr> 
-                                    <?php } ?>
-                            </select>
-                        </div>
-                            
-                            
-                            
-                            <div class="group-material" id="aspirantesForm">
-                                <input type="text" class="material-control tooltips-general"
-                                    placeholder="Calificacion de aspirante" required="" data-toggle="tooltip" data-placement="top"
-                                    title="Escriba el código del Aula" name="calificacion_aspirante" value="<?php echo $codigoAspirante ?>">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Calificacion</label>
-                            </div>
-                            <div class="group-material">
-                                <span style="color: #E34724;">Estado</span>
-                                <select name="estadocalificacion_aspirante" class="material-control tooltips-general" data-toggle="tooltip" data-placement="top"
-                                        data-original-title="Elige el genero">
-                                    <option value="" disabled="" selected="">Selecciona un estado</option>
-                                    <option value="APR">Aprobado</option>
-                                    <option value="REP">Reprobado</option>
-                                </select>
-                            </div>
-                            <p class="text-center">
-                                <input type="submit" name="accionAspirantes" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
-                                <button type="reset" class="btn btn-info"><i
-                                        class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                            </p>
-                        </div>                        
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-
-
-
-
-        
-        <div class="container-fluid">
-            <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Registro de calificaciones Aspirante</div>
-                
-
-
-
-            </div>
-        </div>
+  
 
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">

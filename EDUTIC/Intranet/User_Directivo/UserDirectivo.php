@@ -1,7 +1,10 @@
 <?php
-
     include '../services/PlanificacionServicios.php';
     $planificacion = new PlanificacionServicios();
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
     $estudiante="EST";
     $representante="REP";
     $administrativo="ADM";

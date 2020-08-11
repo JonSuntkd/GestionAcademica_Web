@@ -1,24 +1,23 @@
 <?php
 
-    include '../services/PlanificacionServicios.php';
-    $planificacion = new PlanificacionServicios();
+    include '../services/MatriculaServicios.php';
+    $matricula = new MatriculaServicios();
     session_start();
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
     $codigoPeriodo = "";
-    $estado="";
+    $cedula="";
+    $cod_persona="";
     $fechaInicio="";
     $fechaFin="";
     $accion="Añadir";
-    $mensaje="Planificar un curso";
+    $mensaje="Matricula Nuevo Estudiante";
 
-    if(isset($_POST['accionPlanificacion']))
+    if(isset($_POST['accionMatricula']))
     {
-        $planificacion->agregarDatosPeriodo($_POST['cod_nivel'],$_POST['asignatura'],$_POST['periodo'],
-                                            $_POST['paralelo'],$_POST['profesor'],$_POST['aula']);
-    }
-    
+        //$matricula->agregarMatricula($_POST['periodo'],$_POST['cod_persona'],$_POST['cod_nivel_educativo']);
+    } 
 ?>
 
 <!DOCTYPE html> 
@@ -36,7 +35,6 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="../css/style.css">
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../js/jquery-1.11.2.min.js"><\/script>')</script>
     <script src="../js/modernizr.js"></script>
@@ -137,12 +135,12 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small>Gestión de Periodo Académico</small></h1>
+                <h1 class="all-tittles">EduTic <small>Gestión de Matrículas</small></h1>
             </div>
         </div>
         <div class="container-fluid">
             <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
-                <li role="presentation" class="active"><a href="admininstitution.php">Periodo Académico</a></li>
+                <li role="presentation" class="active"><a href="admininstitution.php">Planificación de Matriculas</a></li>
             </ul>
         </div>
         <div class="container-fluid" style="margin: 50px 0;">
@@ -152,168 +150,75 @@
                         style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Funcionalidad que permite gestionar los docentes, las aulas, las asignaturas que corresponden a los
-                    diferentes niveles educativos. 
+                    Funcionalidad que permite gestionar las matrículas de los estudiantes. 
                 </div>
             </div>
-        </div>
-        <div class="container-fluid">
-            <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">
-                    <a href="#asignaturaPeriodo" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sedes" style="margin-right: 20px; color:white; font-size:30px;">Datos para el registro de aulas, docentes y asignaturas</a>
-                </div>
-            </div>
-            
-            <form name="planiPeriodoForm" id="planiPeriodoForm" method="post">
-                    <div class="row container-flat-form">
-                        <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="asignaturasForm">
-                            <div class="group-material">
-                               <form id="nivel_educativo" name="cod_nivel_educativo" method="post">
-                                <span style="color: #E34724;"><h2>Seleccione el nivel educativo</h2></span> 
-                                <select class="form-control" name="cod_nivel_educativo">
-                                    <option value="" disabled="" selected="">Selecciona el nivel</option>
-                                        <?php 
-                                            $result2 = $planificacion->nivelesEducativos();
-                                            foreach($result2 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?>"><?php echo $opciones['NOMBRE'] ?></option>
-                                    <?php endforeach ?>
-                                </select><br>
-                                    <script type="text/javascript">
-                                        var nivel = document.getElementById('cod_nivel_educativo').value = "<?php echo $opciones['NOMBRE'];?>";
-                                    </script>
-                                <input type="submit" name="accionNivel" value="Aceptar" class="btn btn-primary" style="margin-right: 20px;" >
-                               </form>
-                            </div>
-                            <?php
-                                if(isset($_POST['accionNivel']))
-                                {
-                                    $asignatura = $_POST['cod_nivel_educativo'];
-                                }
-                            ?>
-                            <input type="hidden" name="cod_nivel" value="<?php echo $asignatura ?>">
-                            <div class="group-material">
-                                <span style="color: #E34724;"><h2>Seleccione la asignatura correspondiente al nivel</h2></span> 
-                                <select class="form-control" name="asignatura">
-                                    <option value="" disabled="" selected="">Selecciona la asignatura</option>
-                                        <?php 
-                                            $result3 = $planificacion->asignaturas($asignatura);
-                                            foreach($result3 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_ASIGNATURA'] ?>"><?php echo $opciones['NOMBRE'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="group-material">
-                                <span style="color: #E34724;"><h2>Seleccione el periodo lectivo</h2></span> 
-                                <select class="form-control" name="periodo">
-                                    <option value="" disabled="" selected="">Selecciona el periodo</option>
-                                        <?php 
-                                            $result4 = $planificacion->periodo($asignatura);
-                                            foreach($result4 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_PERIODO_LECTIVO'] ?>"><?php echo $opciones['COD_PERIODO_LECTIVO'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="group-material">
-                                <span style="color: #E34724;"><h2>Asignar el paralelo</h2></span> 
-                                <select class="form-control" name="paralelo">
-                                    <option value="" disabled="" selected="">Selecciona el paralelo</option>
-                                        <?php 
-                                            $result5 = $planificacion->encontrarParalelo($asignatura);
-                                            foreach($result5 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_PARALELO'] ?>"><?php echo $opciones['NOMBRE'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="group-material">
-                                <span style="color: #E34724;"><h2>Asignar el profesor</h2></span> 
-                                <select class="form-control" name="profesor">
-                                    <option value="" disabled="" selected="">Seleccionar el profesor</option>
-                                        <?php 
-                                            $result6 = $planificacion->encontrarProfesor();
-                                            foreach($result6 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_PERSONA'] ?>"><?php echo $opciones['APELLIDO'] ?>&nbsp;<?php echo $opciones['NOMBRE'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="group-material">
-                                <span style="color: #E34724;"><h2>Asignar el aula</h2></span> 
-                                <select class="form-control" name="aula">
-                                    <option value="" disabled="" selected="">Seleccionar el aula</option>
-                                        <?php 
-                                            $result7 = $planificacion->encontrarAula();
-                                            foreach($result7 as $opciones):
-                                        ?>
-                                    <option value="<?php echo $opciones['COD_AULA'] ?>"><?php echo $opciones['NOMBRE'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <p class="text-center">
-                                <input type="submit" name="accionPlanificacion" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
-                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
-                                        class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                            </p>
-                        </div>
-                    </div>
-                </form>
         </div>
 
-        <?php
+        <section class="full-reset text-center" style="padding: 40px 0;">
+            <div class="container-fluid">
+                <div class="container-flat-form">
+                    <div class="title-flat-form title-flat-blue">Realizar matrícula los estudiantes que se han registrado</div>
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <div class="group-material">
+                                <input type="date" class="material-control tooltips-general" placeholder="Ingrese una fecha" required="" 
+                                                   data-toggle="tooltip" data-placement="top" title="Elija una fecha" 
+                                                   name="fecha_inicio" onchange="obtenerFecha(this)">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Fecha de Inicio</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="date" class="material-control tooltips-general" placeholder="Ingrese una fecha" required="" 
+                                                   data-toggle="tooltip" data-placement="top" title="Elija una fecha" 
+                                                   name="fecha_fin" onchange="obtenerFecha(this)">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Fecha de Fin</label>
+                            </div>
+                                <p class="text-center">
+                                    <input type="submit" name="accionMatricula" value="Aceptar" class="btn btn-primary" style="margin-right: 20px;" >
+                                    <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
+                                            class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         
-            if(isset($_POST['accionPlanificacion']))
-            {
-                $nivel = $_POST['cod_nivel'];
-                $periodo = $_POST['periodo'];
-        ?>
-                <div class="table-responsive">
-                    <table id="tablaAsignacion" class="table-striped table-bordered table-condensed" style="width: 100%;">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Nivel Educativo</th>
-                                <th>Asignatura</th>
-                                <th>Periodo</th>
-                                <th>Paralelo</th>
-                                <th>Docente</th>
-                                <th>Aula</th>
-                                <th>Actualizar</th>
-                                <th>Eliminar</th>
-                            </tr>
+          <div class="container-fluid">
+            <?php
+                if(isset($_POST['accionMatricula'])&&isset($_POST['accionMatricula'])=='Aceptar')
+                {
+            ?>
+                    <div class="table-responsive">
+                        <table id="tablaEstudiantesCalificaciones" class="table-striped table-bordered table-condensed" style="width: 100%;">
+                               <thead class="text-center">
+                                    <tr>
+                                        <th>Apellido</th>
+                                        <th>Nombre</th>
+                                        <th>Dirección</th>
+                                        <th>Fecha de Nacimiento</th>
+                                    </tr>
                                </thead>
                                <tbody>
                                     <?php
-                                        $result = $planificacion->mostrarPlanificacion($nivel,$periodo);
+                                    $matricula->listarAlumnosPorFechaIniFin($_POST['fecha_inicio'],$_POST['fecha_fin']);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
                                             {     
                                     ?>
                                     <tr>
-                                        <!--DATOS DE LA TABLA EDIFICIOS-->
-                                        <td><?php echo $row ["NIVEL"];?></td>
-                                        <td><?php echo $row ["ASIGNATURA"];?></td>
-                                        <td><?php echo $row ["COD_PERIODO_LECTIVO"];?></td>
-                                        <td><?php echo $row ["PARALELO"];?></td>
-                                        <td><?php echo ($row ["NOMBRE"]." ".$row['APELLIDO']);?></td>
-                                        <td><?php echo $row ["COD_AULA"];?></td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="GestionPlanificacionPeriodo.php?modificarPeriodo=<?php echo $row ["COD_NIVEL_EDUCATIVO"];?>&periodo=<?php echo $row['COD_PERIODO_LECTIVO'] ?>" class="btn btn-success" type="button">
-                                                    <i class="zmdi zmdi-refresh"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="GestionPlanificacionPeriodo.php?eliminarPeriodo=<?php echo $row ["COD_PARALELO"];?>" class="btn btn-danger" role="button">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        <!--DATOS DE LA TABLA SEDES-->
+                                        <td><?php echo $row ["APELLIDO"];?></td>
+                                        <td><?php echo $row ["NOMBRE"];?></td>
+                                        <td><?php echo $row ["DIRECCION"];?></td>
+                                        <td><?php echo $row ["FECHA_NACIMIENTO"];?></td>
+                                        <input type="hidden" name="cod_alumno[]" value="<?php echo $row['COD_PERSONA'] ?>">
                                     </tr>
                                     <?php   } 
                                         } 
@@ -327,10 +232,50 @@
                                 </tbody> 
                             </table>
                         </div>
-
-        <?php } ?>
-
+                        <div class="group-material col-xs-12 col-sm-8 col-sm-offset-2">
+                                    <span style="color: #E34724;"><h2>Seleccione el periodo lectivo</h2></span> 
+                                    <select class="form-control" name="periodo">
+                                        <option value="" disabled="" selected="">Selecciona el periodo</option>
+                                            <?php 
+                                                $result = $matricula->periodo();
+                                                foreach($result as $opciones):
+                                            ?>
+                                        <option value="<?php echo $opciones['COD_PERIODO_LECTIVO'] ?>"><?php echo $opciones['COD_PERIODO_LECTIVO'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                            </div>
+                            <div class="group-material col-xs-12 col-sm-8 col-sm-offset-2">
+                                    <span style="color: #E34724;"><h2>Seleccione el nivel educativo</h2></span> 
+                                    <select class="form-control" name="nivel">
+                                        <option value="" disabled="" selected="">Selecciona el ninvel</option>
+                                            <?php 
+                                                $result2 = $matricula->nivelesEducativos();
+                                                foreach($result2 as $opciones):
+                                            ?>
+                                        <option value="<?php echo $opciones['COD_NIVEL_EDUCATIVO'] ?>"><?php echo $opciones['NOMBRE'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                            </div>
+                        <input type="submit" name="accionMatriculaNueva" value="Hecho" class="btn btn-primary" style="margin-right: 20px;" >
+                    </form>
+                <?php
+                } ?>              
         
+            <?php
+                    if(isset($_POST['accionMatriculaNueva'])&& ($_POST['accionMatriculaNueva']=='Hecho'))
+                    {
+                        $codigo_alumno = $_POST['cod_alumno'];
+                        //$notas = $_POST['notas'];
+                        foreach($codigo_alumno as $alumno)
+                        //foreach (array_combine($codigo_alumno, $notas) as $alumno => $notas) 
+                        {
+                            $matricula->matricularAlumnos($_POST['periodo'],$alumno,$_POST['nivel']);
+                        }
+                    }
+            ?>
+
+        </div>
+        </section>
         
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">

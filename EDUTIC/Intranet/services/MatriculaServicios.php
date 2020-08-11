@@ -108,6 +108,12 @@ class MatriculaServicios extends MainService
         $stmt->close();
         
     }
+
+    //PARA INGRESAR A TODOS
+    function listarAlumnosPorFechaIniFin($fecha_inicio,$fecha_fin)
+    {
+        return $this->conexion->query("SELECT * FROM persona WHERE FECHA_NACIMIENTO BETWEEN '".$fecha_inicio."' AND '".$fecha_fin."'");
+    }
 }
 
 ?>

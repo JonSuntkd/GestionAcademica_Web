@@ -50,13 +50,13 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserAlumno.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Inicio</a>
-                    </li>
                     <li><a href="./UserAlumnoTareas.php">
                             <i class="zmdi zmdi-file zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Tareas</a>
+                    </li>
+                    <li><a href="./UserAlumnoAsistencias.php"><i class="zmdi zmdi-font zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Asistencias</a>
                     </li>
                     <li><a href="./UserAlumnoCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Calificaciones</a></li>
@@ -73,9 +73,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles"><?php echo $_SESSION['user']['NOMBRE_USUARIO'] ?></span>
+                    <span class="all-tittles">Alumno <?php echo $_SESSION['user']['NOMBRE_USUARIO'] ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

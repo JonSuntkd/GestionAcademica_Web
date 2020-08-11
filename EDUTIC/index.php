@@ -1,6 +1,6 @@
 <?php
 	include './intranet/services/LoginServicio.php';
-
+	error_reporting(0);
 	if (isset($_POST['username']) && isset($_POST['pass'])){
 		$loginService = new LoginServicio();
 		$row = $loginService->login($_POST['username'], $_POST['pass']);
@@ -10,22 +10,22 @@
 			//header('Location: ./intranet/User_Administrativo/GestionInfraestructura.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '1') {
-			header('Location: ./intranet/User_Super/SuperUser.php');
+			header('Location: ./intranet/User_Super/GestionPersonal.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '2') {
-			header('Location: ./intranet/User_Directivo/userDirectivo.php');
+			header('Location: ./intranet/User_Directivo/UserDirectivo.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '3') {
-			header('Location: ./intranet/User_Administrativo/GestionInfraestructura.php');
+			header('Location: ./intranet/User_Administrativo/UsuarioAdministrativo.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '4') {
 			header('Location: ./intranet/User_Docente/UserDocente.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '5') {
-			header('Location: ./intranet/User_Alumno/UserAlumno.html');
+			header('Location: ./intranet/User_Alumno/UserAlumnoTareas.php');
 		}
 		if ($_SESSION['user']['COD_ROL'] == '6') {
-			header('Location: ./intranet/User_Representante/UserRepresentanteAsistencias.php');
+			header('Location: ./intranet/User_Representante/UserRepresentante.php');
 		}
 	}
 

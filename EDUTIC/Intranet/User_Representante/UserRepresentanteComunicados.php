@@ -61,17 +61,20 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserAlumno.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Inicio</a>
-                    </li>
-                    <li><a href="./UserAlumnoTareas.php">
+                    <li><a href="./UserRepresentante.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Inicio</a></li>
+                        </li>
+                    <li><a href="./UserRepresentanteTareas.php">
                             <i class="zmdi zmdi-file zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Tareas</a>
                     </li>
-                    <li><a href="./UserAlumnoCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserRepresentanteAsistencias.php"><i class="zmdi zmdi-font zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Asistencias</a>
+                    </li>
+                    <li><a href="./UserRepresentanteCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Calificaciones</a></li>
-                    <li><a href="./UserAlumnoComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserRepresentanteComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Comunicados</a></li>
                 </ul>
             </div>
@@ -84,9 +87,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles"><?php echo $_SESSION['user']['NOMBRE_USUARIO'] ?></span>
+                    <span class="all-tittles">Rep <?php echo $_SESSION['user']['NOMBRE_USUARIO'] ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
@@ -100,7 +103,7 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small>Alumno - Comunicados</small></h1>
+                <h1 class="all-tittles">EduTic <small>Representante - Comunicados</small></h1>
             </div>
         </div>
         <div class="container-fluid"  style="margin: 50px 0;">

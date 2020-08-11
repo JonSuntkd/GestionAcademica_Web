@@ -47,21 +47,21 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserRepresentante.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserRepresentante.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                         </li>
-                        <li><a href="./UserRepresentanteTareas.html"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                Tareas</a></li>
-                        <li>
-                        <li><a href="./UserRepresentanteComunicados.html"><i
-                                    class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                Comunicados</a></li>
-                        <li>
-                        <li>
-                        <li><a href="./UserRepresentanteCalificaciones.html"><i
-                                    class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
-                                Calificaciones</a></li>
-                        <li>
+                    <li><a href="./UserRepresentanteTareas.php">
+                            <i class="zmdi zmdi-file zmdi-hc-fw">
+                            </i>&nbsp;&nbsp;
+                            Tareas</a>
+                    </li>
+                    <li><a href="./UserRepresentanteAsistencias.php"><i class="zmdi zmdi-font zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Asistencias</a>
+                    </li>
+                    <li><a href="./UserRepresentanteCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Calificaciones</a></li>
+                    <li><a href="./UserRepresentanteComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Comunicados</a></li>
                 </ul>
             </div>
         </div>
@@ -97,13 +97,12 @@
             <article class="tile">
                 <div class="tile-icon full-reset"><i class="zmdi zmdi-accounts"></i></div>
                 <div class="tile-name all-tittles">Representante</div>
-                <div class="tile-num full-reset">R00001234</div>
+                <div class="tile-num full-reset"><?php echo $_SESSION['user']['NOMBRE_USUARIO']?></div>
             </article>
             <div class="col-xs-12 col-sm-6">
                 <h2 class="all-tittles">Tiene las siguientes reglas</h2>
                
-                <a href="../User_Alumno/ReglasAprobacionAElectivo.pdf">1. La calificación mínima requerida para la aprobación es de siete sobre diez (7/10). 
-                    Seguir leyendo..............</a>
+                <a href="../User_Alumno/ReglasAprobacionAElectivo.pdf">1. Reglas de aprobación para el presente periodo académico</a>
             </div>
         </section>
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">

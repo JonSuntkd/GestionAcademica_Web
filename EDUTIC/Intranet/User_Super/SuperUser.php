@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -50,9 +56,9 @@
                    <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Super Usuario</span>
+                    <span class="all-tittles">Super Usuario <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li  class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom" title="Salir del sistema">
+                <li  class="tooltips-general exit-system-button" data-href="../../index.php" data-placement="bottom" title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
                 <li  class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">

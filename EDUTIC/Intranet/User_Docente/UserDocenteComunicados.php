@@ -53,16 +53,16 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserDocente.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li><a href="./UserDocenteCalificaciones.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Calificaciones</a></li>
-                    <li><a href="./UserDocenteFaltas.html">
+                    <li><a href="./UserDocenteAsistencias.php">
                             <i class="zmdi zmdi-face zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
-                            Faltas</a></li>
+                            Asistencias</a></li>
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Tareas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
@@ -93,9 +93,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles"><?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
+                    <span class="all-tittles">Docente <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

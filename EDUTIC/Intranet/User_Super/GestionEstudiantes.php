@@ -2,6 +2,10 @@
 
 include '../services/PersonaServicios.php';
 $persona = new PersonaServicios();
+session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
 $tipo_persona="tipo_persona";
 $estudiante="EST";
 $representante="REP";
@@ -84,9 +88,7 @@ $representante="REP";
                                     Gestion Estudiantes</a></li>
                         </ul>
                     </li>
-                    <li><a href="./SuperUser.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Roles</a></li>
-                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
-                    <li><a href="./GestionEstado.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Estado</a></li>
+                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes de Personas</a></li>
                 </ul>
             </div>
         </div>
@@ -98,9 +100,9 @@ $representante="REP";
                    <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Super Usuario</span>
+                    <span class="all-tittles">Super Usuario <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li  class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom" title="Salir del sistema">
+                <li  class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom" title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
                 <li  class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">

@@ -1,6 +1,10 @@
 <?php
     include '../services/PersonaServicios.php';
     $persona = new PersonaServicios();
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
     $tipo_personal="EST";
 ?>
 

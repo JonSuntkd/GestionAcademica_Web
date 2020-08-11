@@ -2,6 +2,10 @@
 
 include '../services/PlanificacionServicios.php';
 $paralelo = new PlanificacionServicios();
+session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
 
     $codigoParalelo = "";
     $nombreParalelo = "";
@@ -100,9 +104,9 @@ $paralelo = new PlanificacionServicios();
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Administrativo</span>
+                    <span class="all-tittles">Administrativo <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

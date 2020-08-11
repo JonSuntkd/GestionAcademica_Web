@@ -2,10 +2,6 @@
 
     include '../services/PlanificacionServicios.php';
     $planificacion = new PlanificacionServicios();
-    session_start();
-    if (!isset($_SESSION['user'])) {
-        header('Location: ../../index.php');
-    }
     $estudiante="EST";
     $representante="REP";
     $administrativo="ADM";
@@ -56,9 +52,8 @@
                 <ul class="list-unstyled">
                     <li><a href="./UserDirectivo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                    <li>
-                        <a href="./ReportesDirectivo.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
-                    </li>
+                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
+                
                 </ul>
             </div>
         </div>

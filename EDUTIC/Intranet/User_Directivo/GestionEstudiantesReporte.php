@@ -2,6 +2,12 @@
     include '../services/PersonaServicios.php';
     $persona = new PersonaServicios();
 
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+
+
     $tipo_personal="EST";
 ?>
 
@@ -63,9 +69,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Directivo</span>
+                    <span class="all-tittles">Directivo - <?php echo $_SESSION['user']['NOMBRE_USUARIO']?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

@@ -2,6 +2,10 @@
     include '../services/PersonaServicios.php';
     $persona = new PersonaServicios();
     $cedula="";
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
 
     if(isset($_GET['encontrarPersona']))
     {
@@ -50,6 +54,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
+                
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-account-circle zmdi-hc-fw"></i>&nbsp;&nbsp; Gestión de Personas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
                         <ul class="list-unstyled">
@@ -59,9 +64,16 @@
                                     Gestion Estudiantes</a></li>
                         </ul>
                     </li>
-                    <li><a href="./SuperUser.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Roles</a></li>
-                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
-                    <li><a href="./GestionEstado.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Estado</a></li>
+                    <li><a href="./GestionRol.php"><i class="zmdi zmdi-home zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Roles</a></li>
+                    <li><a href="./GestionPersonaReporte.php">
+                            <i class="zmdi zmdi-trending-up zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Reportes Personas</a></li>
+                    <li><a href="./GestionEstado.php">
+                            <i class="zmdi zmdi-account-add zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Estado</a></li>
+
+                
                 </ul>
             </div>
         </div>
@@ -73,9 +85,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Administrativo</span>
+                    <span class="all-tittles">Super Usuario - <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
@@ -188,7 +200,22 @@
                     </div>
                 </form>
             </div>
-        </div>
+
+              <form id="aspirantes" method="post" action="GestionReportePerExcel.php">
+                  
+                        <center>
+                        <input value="Reporte de personas en Excel" type="submit" name="generar_reporte">
+                         </center>                  
+                    </div>
+                           
+                </form>
+
+                <form id="aspirantes" method="post" action="GestionReportePersonaPdf.php">
+                  <center>
+                   <input value="Reporte de personas en PDF" type="submit" name="generar_reporte">
+                   </center>                    
+                </form>  
+
 
 
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">

@@ -10,6 +10,13 @@
     $administrativo="ADM";
     $directivo="DIR";
     $docente="PRO";
+
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +75,7 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Directivo <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
+                    <span class="all-tittles">Directivo - <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
                 <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">

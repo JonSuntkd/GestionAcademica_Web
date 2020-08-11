@@ -1,11 +1,15 @@
 <?php
     include '../services/PersonaServicios.php';
     $persona = new PersonaServicios();
+
+    $tipo_personal="EST";
+
     session_start();
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
-    $tipo_personal="EST";
+
+
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +53,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
+                    
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-account-circle zmdi-hc-fw"></i>&nbsp;&nbsp; Gestión de Personas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
                         <ul class="list-unstyled">
@@ -58,10 +63,16 @@
                                     Gestion Estudiantes</a></li>
                         </ul>
                     </li>
-                    <li><a href="./SuperUser.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Roles</a></li>
-                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes Personas</a></li>
-                    <li><a href="./GestionEstado.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Gestion de Estado</a></li>
-                </ul>
+                    <li><a href="./GestionRol.php"><i class="zmdi zmdi-home zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Roles</a></li>
+                    <li><a href="./GestionPersonaReporte.php">
+                            <i class="zmdi zmdi-trending-up zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Reportes Personas</a></li>
+                    <li><a href="./GestionEstado.php">
+                            <i class="zmdi zmdi-account-add zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Estado</a></li>
+                
+                    </ul>
             </div>
         </div>
     </div>
@@ -72,9 +83,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Administrativo</span>
+                    <span class="all-tittles">Super Usuario - <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?> </span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>
@@ -118,7 +129,7 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">
-                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;">Datos del Personal de la institución</a>
+                    <a href="#asignaturas" class="btn btn-lg" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="asignaturas" style="margin-right: 20px; color:white;">Datos de los estudiantes</a>
                 </div>
                 <!--<div class="row">
                     <div class="grou-material col-md-4 mb-5"></div>
@@ -192,6 +203,19 @@
                         </div><br>
                     </div>
                 </form>
+
+                <form id="aspirantes" method="post" action="GestionReporteAlumno.php">
+                 <center>
+                     <input value="Mirar todos los alumnos en PDF" type="submit" name="generar_reporte">
+                </center>                    
+                </form>  
+                <br></br>
+                <form id="aspirantes" method="post" action="GestionReporteAlumnoExcel.php">
+                 <center>
+                     <input value="Mirar todos los Administrativo en EXCEL" type="submit" name="generar_reporte">
+                </center>                    
+                </form>  
+
             </div>
         </div>
 

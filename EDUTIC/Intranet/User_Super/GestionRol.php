@@ -7,6 +7,7 @@
     $password="";
     $errors = '';
     session_start();
+    
 
     $cod_docente=$_SESSION['user']['COD_PERSONA'];
     if (!isset($_SESSION['user'])) {
@@ -66,24 +67,24 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Inicio</a></li>
-                    <li><a href="./UserDocenteCalificaciones.html">
+                
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-circle zmdi-hc-fw"></i>&nbsp;&nbsp; Gestión de Personas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
+                        <ul class="list-unstyled">
+                            <li><a href="./GestionPersonal.php"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>&nbsp;&nbsp;
+                                    Gestion Personal</a></li>
+                            <li><a href="./GestionEstudiantes.php"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>&nbsp;&nbsp;
+                                    Gestion Estudiantes</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="./GestionRol.php"><i class="zmdi zmdi-home zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Roles</a></li>
+                    <li><a href="./GestionPersonaReporte.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Calificaciones</a></li>
-                    <li><a href="./UserDocenteFaltas.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Faltas</a></li>
-                    <li><a href="./UserDocenteTareas.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Tareas</a></li>
-                    <li><a href="./UserDocenteComunicados.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Comunicados</a></li>
+                            </i>&nbsp;&nbsp; Reportes Personas</a></li>
+                    <li><a href="./GestionEstado.php">
+                            <i class="zmdi zmdi-account-add zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Estado</a></li>
 
 
                 </ul>
@@ -97,9 +98,9 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles"><?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
+                    <span class="all-tittles">Super Usuario - <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="../../index.php" data-placement="bottom"
+                <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
                 </li>

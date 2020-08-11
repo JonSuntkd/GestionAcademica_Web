@@ -81,7 +81,14 @@ $tipo_persona="tipo_persona";
                                     Gestion Estudiantes</a></li>
                         </ul>
                     </li>
-                    <li><a href="./GestionPersonaReporte.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes de Personas</a></li>
+                    <li><a href="./GestionRol.php"><i class="zmdi zmdi-home zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Roles</a></li>
+                    <li><a href="./GestionPersonaReporte.php">
+                            <i class="zmdi zmdi-trending-up zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Reportes Personas</a></li>
+                    <li><a href="./GestionEstado.php">
+                            <i class="zmdi zmdi-account-add zmdi-hc-fw">
+                            </i>&nbsp;&nbsp; Gestion de Estado</a></li>
                 </ul>
             </div>
         </div>
@@ -93,7 +100,7 @@ $tipo_persona="tipo_persona";
                    <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Super Usuario <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
+                    <span class="all-tittles">Super Usuario - <?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
                 <li  class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom" title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>

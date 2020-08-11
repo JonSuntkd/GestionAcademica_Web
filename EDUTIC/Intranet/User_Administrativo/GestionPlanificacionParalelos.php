@@ -58,7 +58,7 @@ $paralelo = new PlanificacionServicios();
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li>
                         <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
@@ -80,25 +80,6 @@ $paralelo = new PlanificacionServicios();
                             <li>
                                 <a href="./GestionPlanificacionParalelos.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>Paralelos</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <!------------------------------------ Periodo ---------------------------->
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
-                            Periodo </div>
-                        <ul class="list-unstyled">
-                            <li><a href="./GestionPeriodos.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Gestión de Periodos</a></li>
-                            <li><a href="./AsignacionDocente.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Asignación de Docente</a></li>
-                            <li><a href="./EsquemasEvaluacion.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Esquemas de Evaluación</a></li>
                         </ul>
                     </li>
                     <!--ASPIRANTES-->
@@ -210,7 +191,60 @@ $paralelo = new PlanificacionServicios();
                             </p>
                         </div>
                     </div>
-                </form>
+                
+
+                        <div class="table-responsive">
+                            <table id="tablaAulas" class="table-striped table-bordered table-condensed" style="width: 100%;">
+                               <thead class="text-center">
+                                    <tr>
+                                        <th>Código Paralelo</th>
+                                        <th>Código Nivel Educativo</th>
+                                        <th>Nombre</th>
+                                        <th>Actualizar</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                    <?php
+                                        $result = $paralelo->mostrarParalelos();
+                                        if($result->num_rows>0)
+                                        {
+                                            while($row = $result->fetch_assoc())
+                                            {     
+                                    ?>
+                                    <tr>
+                                        <!--DATOS DE LA TABLA EDIFICIOS-->
+                                        <td><?php echo $row ["COD_PARALELO"];?></td>
+                                        <td><?php echo $row ["COD_NIVEL_EDUCATIVO"];?></td>
+                                        <td><?php echo $row ["NOMBRE"];?></td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionPlanificacionParalelos.php?modificarParalelo=<?php echo $row ["COD_PARALELO"];?>" class="btn btn-success" type="button">
+                                                    <i class="zmdi zmdi-refresh"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <a href="GestionPlanificacionParalelos.php?eliminarParalelo=<?php echo $row ["COD_PARALELO"];?>" class="btn btn-danger" role="button">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php   } 
+                                        } 
+                                        else
+                                        {
+                                    ?>
+                                    <tr>
+                                        <td>No hay datos en la tabla</td>
+                                    </tr>        
+                                    <?php } ?>
+                                </tbody> 
+                            </table>
+                        </div>
+                    </form>
         </div>
         
         

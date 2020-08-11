@@ -60,7 +60,7 @@
                     </li>
                     <li><a href="./UserAlumnoCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Calificaciones</a></li>
-                    <li><a href="./UserAlumnoComunicados.html"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserAlumnoComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Comunicados</a></li>
                 </ul>
             </div>

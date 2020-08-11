@@ -2,6 +2,10 @@
 
 include '../services/PlanificacionServicios.php';
 $planificacion = new PlanificacionServicios();
+session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
     $codigoPeriodo = "";
     $estado="";
     $fechaInicio="";
@@ -12,6 +16,28 @@ $planificacion = new PlanificacionServicios();
     {
         $planificacion->insertarPeriodo($_POST['cod_periodo_lectivo'],$_POST['estado'],
                                         $_POST['fecha_inicio'],$_POST['fecha_fin']);
+    }
+    else if(isset($_POST["accionPeriodo"]) && ($_POST["accionPeriodo"]=="Modificar"))
+    {
+        $planificacion->modificarPeriodo($_POST['cod_periodo_lectivo'],$_POST['estado'],$_POST['fecha_inicio'],
+        $_POST['fecha_fin'],$_POST['cod_periodo_comparar']);
+    }
+    else if(isset($_GET["modificarPeriodo"]))
+    {
+        $result = $planificacion->encontrarPeriodo($_GET['modificarPeriodo']);
+        if($result!=null)
+        {
+            $codigoPeriodo = $result['COD_PERIODO_LECTIVO'];
+            $estado = $result['ESTADO'];
+            $fechaInicio = $result['FECHA_INICIO'];
+            $fechaFin = $result['FECHA_FIN'];
+            $mensajeSede = "Modificar datos del Periodo";
+            $accion="Modificar";
+        }
+    }
+    else if(isset($_GET['eliminarPeriodo']))
+    {
+        $planificacion->eliminarPeriodo($_GET['eliminarPeriodo']);
     }
 ?>
 
@@ -57,19 +83,13 @@ $planificacion = new PlanificacionServicios();
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li>
                         <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
                     </li>
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Gestión de Asignaturas <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Registro de Asignaturas</a></li>
-                            <li><a href="./GestionAsignaturasReportes.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Reportes de Asignaturas</a></li>
-                        </ul>
-                        
+                        <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
                     </li>
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
@@ -85,25 +105,6 @@ $planificacion = new PlanificacionServicios();
                             <li>
                                 <a href="./GestionPlanificacionParalelos.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>Paralelos</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <!------------------------------------ Periodo ---------------------------->
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
-                            Periodo </div>
-                        <ul class="list-unstyled">
-                            <li><a href="./GestionPeriodos.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Gestión de Periodos</a></li>
-                            <li><a href="./AsignacionDocente.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Asignación de Docente</a></li>
-                            <li><a href="./EsquemasEvaluacion.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Esquemas de Evaluación</a></li>
                         </ul>
                     </li>
                     <!--ASPIRANTES-->
@@ -124,7 +125,7 @@ $planificacion = new PlanificacionServicios();
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Administrativo</span>
+                    <span class="all-tittles"><?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
                 <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
                     title="Salir del sistema">
@@ -201,14 +202,14 @@ $planificacion = new PlanificacionServicios();
                                         <td><?php echo $row ["FECHA_FIN"];?></td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="GestionAsignaturasInicial.php?modificarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-success" type="button">
+                                                <a href="GestionPlanificacion.php?modificarPeriodo=<?php echo $row ["COD_PERIODO_LECTIVO"];?>" class="btn btn-success" type="button">
                                                     <i class="zmdi zmdi-refresh"></i>
                                                 </a>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="GestionAsignaturasInicial.php?eliminarAsignatura=<?php echo $row ["COD_ASIGNATURA"];?>#asignaturasForm" class="btn btn-danger" role="button">
+                                                <a href="GestionPlanificacion.php?eliminarPeriodo=<?php echo $row ["COD_PERIODO_LECTIVO"];?>" class="btn btn-danger" role="button">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </a>
                                             </div>
@@ -228,7 +229,7 @@ $planificacion = new PlanificacionServicios();
                         </div><br>
                         <h1 style="text-align: center;"><?php echo $mensaje ?></h1><br><br>
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="asignaturasForm">
-                            <input type="hidden" name="cod_per_lec" value="<?php echo $codigoPeriodo ?>">
+                            <input type="hidden" name="cod_periodo_comparar" value="<?php echo $codigoPeriodo ?>">
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general"
                                     placeholder="Código del Periodo Lectivo" required="" data-toggle="tooltip" data-placement="top"

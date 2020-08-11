@@ -77,4 +77,10 @@ class TareaServicios extends MainService
                                           WHERE matricula_periodo.COD_ALUMNO='".$cod_alumno."'");
         return $result;
     }
+    //VISUALIZAR AL REPRESENTANTE
+    function datosEstudiante($cod_representante)
+    {
+        return $this->conexion->query("SELECT COD_PERSONA,APELLIDO,NOMBRE FROM persona 
+        WHERE COD_PERSONA_REPRESENTANTE='".$cod_representante."'");
+    }
 }

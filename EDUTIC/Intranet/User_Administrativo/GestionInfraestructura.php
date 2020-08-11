@@ -152,7 +152,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li>
                         <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
@@ -176,25 +176,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <!------------------------------------ Periodo ---------------------------->
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
-                            Periodo </div>
-                        <ul class="list-unstyled">
-                            <li><a href="./GestionPeriodos.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Gestión de Periodos</a></li>
-                            <li><a href="./AsignacionDocente.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Asignación de Docente</a></li>
-                            <li><a href="./EsquemasEvaluacion.html">
-                                    <i class="zmdi zmdi-face zmdi-hc-fw">
-                                    </i>&nbsp;&nbsp;
-                                    Esquemas de Evaluación</a></li>
-                        </ul>
-                    </li>
                     <!--ASPIRANTES-->
                     <li>
                         <a href="./GestionAspirantes.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes</a> 
@@ -213,7 +194,7 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">Administrativo</span>
+                    <span class="all-tittles"><?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
                 </li>
                 <li class="tooltips-general exit-system-button" data-href="../../LogOut.php" data-placement="bottom"
                     title="Salir del sistema">

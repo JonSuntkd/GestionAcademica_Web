@@ -2,19 +2,23 @@
     include '../services/TareaServicios.php';
     $tarea = new TareaServicios();
     session_start();
-    $cod_docente=$_SESSION['user']['COD_PERSONA'];
+    $cod_representante=$_SESSION['user']['COD_PERSONA'];
+    $datos = $tarea->datosEstudiante($cod_representante);
+    $row = $datos->fetch_assoc();
+    $cod_alumno = $row['COD_PERSONA']; 
+    $nombre = $row['NOMBRE'];
+    $apellido = $row['APELLIDO'];
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
     $accion="Aceptar";
-
-    if(isset($_GET['finalizar']))
+    
+    if(isset($_GET['finalizarTarea']))
     {
-        $tarea->tareaTerminada($_GET['finalizar']);
+        //$tarea->tareaTerminada($_GET['finalizarTarea']);
     }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -36,9 +40,8 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="../js/main.js"></script>
+    
 </head>
-
-
 
 <body>
     <div class="navbar-lateral full-reset">
@@ -58,35 +61,18 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Inicio</a></li>
-                    <li><a href="./UserDocenteCalificaciones.php">
-                            <i class="zmdi zmdi-trending-up zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Calificaciones</a></li>
-                    <li><a href="./UserDocenteFaltas.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Faltas</a></li>
-                    <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Tareas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
-                        </div>
-                        <ul>
-                            <li>
-                                <a href="./UserDocenteTareas.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Registrar Nueva Tarea</a>
-                            </li>
-                            <li>
-                                <a href="./UserDocenteTareasReporte.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Tareas Asignadas</a>
-                            </li>
-                        </ul>
+                    <li><a href="./UserAlumno.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Inicio</a>
                     </li>
-                    <li><a href="./UserDocenteComunicados.php">
-                            <i class="zmdi zmdi-collection-text zmdi-hc-fw">
+                    <li><a href="./UserAlumnoTareas.php">
+                            <i class="zmdi zmdi-file zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
+                            Tareas</a>
+                    </li>
+                    <li><a href="./UserAlumnoCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Calificaciones</a></li>
+                    <li><a href="./UserAlumnoComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Comunicados</a></li>
-
-
                 </ul>
             </div>
         </div>
@@ -98,7 +84,7 @@
                     <img src="../assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles"><?php  echo $_SESSION['user']['NOMBRE_USUARIO']  ?></span>
+                    <span class="all-tittles"><?php echo $_SESSION['user']['NOMBRE_USUARIO'] ?></span>
                 </li>
                 <li class="tooltips-general exit-system-button" data-href="../../index.html" data-placement="bottom"
                     title="Salir del sistema">
@@ -114,84 +100,58 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small> Docente - Tareas Registradas</small></h1>
+                <h1 class="all-tittles">EduTic <small>Alumno - Comunicados</small></h1>
             </div>
         </div>
         <div class="container-fluid"  style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
-                    <img src="../assets/img/checklist.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                    <img src="../assets/img/book.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Verificar las tareas que han sido asignadas a los estudiantes.                 
+                    Comunicados enviados por el docente                
                 </div>
             </div>
         </div>
 
         <section class="full-reset text-center" style="padding: 40px 0;">
-        <div class="container-fluid">
-                <div class="container-flat-form">
-                    <div class="title-flat-form title-flat-blue">Verificar Tareas</div>
-                    <form id="sedes" method="post" name="sedes" action="">
-                    <div class="row container-flat-form">
-                        <div class="table-responsive">
-                            <table id="tablaSedes" class="table-striped table-bordered table-condensed" style="width: 100%;">
-                               <thead class="text-center">
-                                    <tr>
-                                        <th>Asignatura</th>
-                                        <th>Paralelo</th>
-                                        <th>Título Tarea</th>
-                                        <th>Detalle Tarea</th>
-                                        <th>Fecha de entrega</th>
-                                        <th>Finalizar Tarea</th>
-                                    </tr>
-                               </thead>
-                               <tbody>
-                                    <?php
-                                        $result = $tarea->verificarTareaDocente($cod_docente);
-                                        if($result->num_rows>0)
-                                        {
-                                            while($row = $result->fetch_assoc())
-                                            {     
-                                    ?>
-                                    <tr>
-                                        <!--DATOS DE LA TABLA SEDES-->
-                                        <td><?php echo $row ["NOMBRE"];?></td>
-                                        <td><?php echo $row ["PARALELO"];?></td>
-                                        <td><?php echo $row ["TITULO_TAREA"];?></td>
-                                        <td><?php echo $row ["DETALLE_TAREA"];?></td>
-                                        <td><?php echo $row ["FECHA_ENTREGA"];?></td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="UserDocenteTareasReporte.php?finalizar=<?php echo $row ["COD_TAREA"];?>" class="btn btn-danger" type="button">
-                                                    Finalizar Tarea
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <?php   } 
-                                        } 
-                                        else
-                                        {
-                                    ?>
-                                    <tr>
-                                        <td>No hay datos de tareas registradas</td>
-                                    </tr>        
-                                    <?php } ?>
-                                </tbody> 
-                            </table>
-                        </div><br><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                            <!--<p class="text-center">
-                                <input type="submit" name="accionSede" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
-                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
-                                        class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                            </p>-->
-                        </div>
-                    </div>
-                </form>
-                </div>
+            
+        <div class="container">
+            <br><br><div class="" id="message"></div>
+                <div class="row mt-2 pb-3">
+                    <?php
+                        $result2 = $tarea->verificarComunicado($cod_alumno);
+                        if($result2->num_rows>0)
+                        {
+                          $cont=0;
+                          while($row = $result2->fetch_assoc())
+                          {
+                    ?>
+                            <div class="col-sm-6 col-md-4 col-lg-3 mb-2">
+                                <div class="card-deck">
+                                    <div class="card p-2 border-secondary mb-2">
+                                        <img src="<?php echo "../assets/img/".$row['IMAGEN'] ?>" class="card-img-top" height="180 !important" width="250 !important">
+                                        <div class="title-flat-form title-flat-blue">
+                                            <button class="title-flat-form title-flat-blue btn btn-primary" type="button" data-toggle="collapse" data-target="#detallesTarea<?php echo $cont ?>" aria-expanded="false" aria-controls="detallesTarea<?php echo $cont ?>">
+                                                <?php echo $row['NOMBRE'] ?>
+                                            </button>
+                                        </div>
+                                        <div class="card-body p-1 collapse" id="detallesTarea<?php echo $cont ?>">
+                                            <h1 class="card-title text-center text-info"><?= $row["TITULO_COMUNICADO"] ?></h1>
+                                            <h2 class="card-text text-center text-danger"><?php echo $row["DETALLE_COMUNICADO"] ?></h2>
+                                            <h3 class="card-text text-center text-success"><?php echo $row["FECHA_COMUNICADO"] ?></h3>
+                                            <a href="../assets/files/<?php echo $row['ARCHIVO'] ?>" download="<?php echo $row['ARCHIVO'] ?>" class="btn btn-success" role="button">
+                                                Descargar Archivo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                 <?php $cont++; } 
+                 }?>
             </div>
+        </div>
+
         </section>
 
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
@@ -239,14 +199,5 @@
         </footer>
     </div>
 </body>
-
-<script>
-
-    function obtenerFecha(e)
-    {
-        var fecha = moment(e.value);
-        return fecha.format("YYYY/MM/DD HH:MM:SS")
-    }
-</script>
 
 </html>

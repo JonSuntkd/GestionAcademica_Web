@@ -53,7 +53,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserDocente.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li><a href="./UserDocenteCalificaciones.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
@@ -76,8 +76,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="./UserDocenteComunicados.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
+                    <li><a href="./UserDocenteComunicados.php">
+                            <i class="zmdi zmdi-collection-text zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Comunicados</a></li>
 

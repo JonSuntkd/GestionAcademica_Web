@@ -2,7 +2,12 @@
     include '../services/TareaServicios.php';
     $tarea = new TareaServicios();
     session_start();
-    $cod_alumno=$_SESSION['user']['COD_PERSONA'];
+    $cod_representante=$_SESSION['user']['COD_PERSONA'];
+    $datos = $tarea->datosEstudiante($cod_representante);
+    $row = $datos->fetch_assoc();
+    $cod_alumno = $row['COD_PERSONA']; 
+    $nombre = $row['NOMBRE'];
+    $apellido = $row['APELLIDO'];
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
@@ -66,7 +71,7 @@
                     </li>
                     <li><a href="./UserAlumnoCalificaciones.php"><i class="zmdi zmdi-collection-item-9-plus zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Calificaciones</a></li>
-                    <li><a href="./UserAlumnoComunicados.php"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserAlumnoComunicados.html"><i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Comunicados</a></li>
                 </ul>
             </div>
@@ -99,26 +104,27 @@
             </div>
         </div>
         <section class="full-reset text-center" style="padding: 40px 0;">
+            <div class="title-flat-form title-flat-blue">Verificar las tareas de <?php echo $nombre  ?>&nbsp;<?php echo $apellido ?></div>
             <?php
-                $result = $tarea->verificarTarea($cod_alumno);
+                /**$result = $tarea->verificarTarea($cod_alumno);
                 if($result!=null)
-                {
+                {**/
             ?>  
-                    <article class="tile">
+                    <!--<article class="tile">
                         <div class="tile-icon full-reset"><i class="zmdi zmdi-assignment-alert"></i></div>
                         <div class="tile-name all-tittles">Estudiante</div>
                         <div class="tile-num full-reset">Tienes Tareas</div>
-                    </article>
-            <?php } 
+                    </article>-->
+            <?php /**} 
                 else
-                {
+                {**/
             ?>
-                    <article class="tile">
+                    <!--<article class="tile">
                         <div class="tile-icon full-reset"><i class="zmdi zmdi-assignment-o"></i></div>
                         <div class="tile-name all-tittles">Estudiante</div>
                         <div class="tile-num full-reset">No tienes tareas</div>
-                    </article>
-            <?php } ?>
+                    </article>-->
+            <?php //} ?>
 
 
         <div class="container">

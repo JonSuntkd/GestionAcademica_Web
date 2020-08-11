@@ -28,11 +28,11 @@ class AsignaturaServicios extends MainService
             return null;
         }
     }
-    function modificarAsignatura($cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo,$codigo_comparar)
+    function modificarAsignatura($cod_nivel_educativo,$cod_asignatura,$nombre,$creditos,$tipo,$codigo_comparar,$imagen)
     {
-        $stmt = $this->conexion->prepare("UPDATE asignatura SET COD_ASIGNATURA=?,NOMBRE=?,CREDITOS=?,TIPO=?
+        $stmt = $this->conexion->prepare("UPDATE asignatura SET COD_ASIGNATURA=?,NOMBRE=?,CREDITOS=?,TIPO=?,IMAGEN=?
                                           WHERE COD_ASIGNATURA=? AND COD_NIVEL_EDUCATIVO=?");
-        $stmt->bind_param('ssisss' ,$cod_asignatura,$nombre,$creditos,$tipo,$codigo_comparar,$cod_nivel_educativo);
+        $stmt->bind_param('ssissss' ,$cod_asignatura,$nombre,$creditos,$tipo,$imagen,$codigo_comparar,$cod_nivel_educativo);
         $stmt->execute();
         $stmt->close();
     }
@@ -40,6 +40,13 @@ class AsignaturaServicios extends MainService
     {
         $stmt = $this->conexion->prepare("DELETE FROM asignatura WHERE COD_ASIGNATURA=? AND COD_NIVEL_EDUCATIVO=?");
         $stmt->bind_param('ss',$codigo_asignatura,$cod_nivel_educativo);
+        $stmt->execute();
+        $stmt->close();
+    }
+    function eliminarAsignatura2($codigo_asignatura)
+    {
+        $stmt = $this->conexion->prepare("DELETE FROM asignatura WHERE COD_ASIGNATURA=?");
+        $stmt->bind_param('s',$codigo_asignatura);
         $stmt->execute();
         $stmt->close();
     }

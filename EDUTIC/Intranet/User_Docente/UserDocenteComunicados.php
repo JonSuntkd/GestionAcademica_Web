@@ -76,7 +76,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="./UserDocenteComunicados.html">
+                    <li><a href="./UserDocenteComunicados.php">
                             <i class="zmdi zmdi-collection-text zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Comunicados</a></li>

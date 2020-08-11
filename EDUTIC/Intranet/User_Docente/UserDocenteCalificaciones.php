@@ -53,7 +53,7 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UserDocente.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
                     <li><a href="./UserDocenteCalificaciones.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
@@ -63,12 +63,21 @@
                             <i class="zmdi zmdi-face zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Faltas</a></li>
-                    <li><a href="./UserDocenteTareas.php">
-                            <i class="zmdi zmdi-file zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Tareas</a></li>
-                    <li><a href="./UserDocenteComunicados.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
+                            Tareas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="./UserDocenteTareas.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Registrar Nueva Tarea</a>
+                            </li>
+                            <li>
+                                <a href="./UserDocenteTareasReporte.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Tareas Asignadas</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="./UserDocenteComunicados.php">
+                            <i class="zmdi zmdi-collection-text zmdi-hc-fw">
                             </i>&nbsp;&nbsp;
                             Comunicados</a></li>
 

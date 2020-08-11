@@ -1,18 +1,16 @@
 <?php
-    include '../services/TareaServicios.php';
-    $tarea = new TareaServicios();
+
+    include '../services/PlanificacionServicios.php';
+    $planificacion = new PlanificacionServicios();
     session_start();
-    $cod_docente=$_SESSION['user']['COD_PERSONA'];
     if (!isset($_SESSION['user'])) {
         header('Location: ../../index.php');
     }
-    $accion="Aceptar";
-
-    if(isset($_GET['finalizar']))
-    {
-        $tarea->tareaTerminada($_GET['finalizar']);
-    }
-
+    $estudiante="EST";
+    $representante="REP";
+    $administrativo="ADM";
+    $directivo="DIR";
+    $docente="PRO";
 ?>
 
 <!DOCTYPE html>
@@ -38,8 +36,6 @@
     <script src="../js/main.js"></script>
 </head>
 
-
-
 <body>
     <div class="navbar-lateral full-reset">
         <div class="visible-xs font-movile-menu mobile-menu-button"></div>
@@ -58,35 +54,37 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./UserDocente.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                    <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                    <li><a href="./UserDocenteCalificaciones.php">
-                            <i class="zmdi zmdi-trending-up zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Calificaciones</a></li>
-                    <li><a href="./UserDocenteFaltas.html">
-                            <i class="zmdi zmdi-face zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Faltas</a></li>
+                    <li>
+                        <a href="./GestionInfraestructura.php"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Infraestructura</a>
+                    </li>
+                    <li>
+                        <a href="./GestionAsignaturasInicial.php"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp;Gestión Asignaturas</a>
+                    </li>
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-check-square zmdi-hc-fw"></i>&nbsp;&nbsp;
-                            Tareas<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+                            Planificación Académica<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
                         </div>
                         <ul>
                             <li>
-                                <a href="./UserDocenteTareas.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Registrar Nueva Tarea</a>
+                                <a href="./GestionPlanificacion.php"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>Periodo Lectivo</a>
                             </li>
                             <li>
-                                <a href="./UserDocenteTareasReporte.php"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Tareas Asignadas</a>
+                                <a href="./GestionPlanificacionPeriodo.php"><i class="zmdi zmdi-collection-bookmark zmdi-hc-fw"></i>Asignaturas y Aulas</a>
+                            </li>
+                            <li>
+                                <a href="./GestionPlanificacionParalelos.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>Paralelos</a>
                             </li>
                         </ul>
                     </li>
-                    <li><a href="./UserDocenteComunicados.php">
-                            <i class="zmdi zmdi-collection-text zmdi-hc-fw">
-                            </i>&nbsp;&nbsp;
-                            Comunicados</a></li>
-
-
+                    <!--ASPIRANTES-->
+                    <li>
+                        <a href="./GestionAspirantes.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes</a> 
+                    </li>
+                    <li><a href="./reportAdministrativo.html"><i
+                        class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes y estadísticas</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -114,86 +112,47 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">EduTic <small> Docente - Tareas Registradas</small></h1>
+                <h1 class="all-tittles">EduTic <small>Inicio</small></h1>
             </div>
         </div>
-        <div class="container-fluid"  style="margin: 50px 0;">
-            <div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <img src="../assets/img/checklist.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
-                </div>
-                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Verificar las tareas que han sido asignadas a los estudiantes.                 
-                </div>
-            </div>
-        </div>
-
         <section class="full-reset text-center" style="padding: 40px 0;">
-        <div class="container-fluid">
-                <div class="container-flat-form">
-                    <div class="title-flat-form title-flat-blue">Verificar Tareas</div>
-                    <form id="sedes" method="post" name="sedes" action="">
-                    <div class="row container-flat-form">
-                        <div class="table-responsive">
-                            <table id="tablaSedes" class="table-striped table-bordered table-condensed" style="width: 100%;">
-                               <thead class="text-center">
-                                    <tr>
-                                        <th>Asignatura</th>
-                                        <th>Paralelo</th>
-                                        <th>Título Tarea</th>
-                                        <th>Detalle Tarea</th>
-                                        <th>Fecha de entrega</th>
-                                        <th>Finalizar Tarea</th>
-                                    </tr>
-                               </thead>
-                               <tbody>
-                                    <?php
-                                        $result = $tarea->verificarTareaDocente($cod_docente);
-                                        if($result->num_rows>0)
-                                        {
-                                            while($row = $result->fetch_assoc())
-                                            {     
-                                    ?>
-                                    <tr>
-                                        <!--DATOS DE LA TABLA SEDES-->
-                                        <td><?php echo $row ["NOMBRE"];?></td>
-                                        <td><?php echo $row ["PARALELO"];?></td>
-                                        <td><?php echo $row ["TITULO_TAREA"];?></td>
-                                        <td><?php echo $row ["DETALLE_TAREA"];?></td>
-                                        <td><?php echo $row ["FECHA_ENTREGA"];?></td>
-                                        <td>
-                                            <div class="text-center">
-                                                <a href="UserDocenteTareasReporte.php?finalizar=<?php echo $row ["COD_TAREA"];?>" class="btn btn-danger" type="button">
-                                                    Finalizar Tarea
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <?php   } 
-                                        } 
-                                        else
-                                        {
-                                    ?>
-                                    <tr>
-                                        <td>No hay datos de tareas registradas</td>
-                                    </tr>        
-                                    <?php } ?>
-                                </tbody> 
-                            </table>
-                        </div><br><br>
-                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                            <!--<p class="text-center">
-                                <input type="submit" name="accionSede" value="<?php echo $accion ?>" class="btn btn-primary" style="margin-right: 20px;" >
-                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i
-                                        class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                            </p>-->
-                        </div>
-                    </div>
-                </form>
-                </div>
-            </div>
+            <article class="tile">
+                <div class="tile-icon full-reset"><i class="zmdi zmdi-face"></i></div>
+                <div class="tile-name all-tittles">directivos</div>
+                <?php
+                    $result = $planificacion->contar($directivo);
+                    $row = $result->fetch_assoc();
+                ?>
+                <div class="tile-num full-reset"><?php echo $row['COUNT(*)'] ?></div>
+            </article>
+            <article class="tile">
+                <div class="tile-icon full-reset"><i class="zmdi zmdi-accounts"></i></div>
+                <div class="tile-name all-tittles">estudiantes</div>
+                <?php
+                    $result = $planificacion->contar($estudiante);
+                    $row = $result->fetch_assoc();
+                ?>
+                <div class="tile-num full-reset"><?php echo $row['COUNT(*)'] ?></div>
+            </article>
+            <article class="tile">
+                <div class="tile-icon full-reset"><i class="zmdi zmdi-male-alt"></i></div>
+                <div class="tile-name all-tittles">docentes</div>
+                <?php
+                    $result = $planificacion->contar($docente);
+                    $row = $result->fetch_assoc();
+                ?>
+                <div class="tile-num full-reset"><?php echo $row['COUNT(*)'] ?></div>
+            </article>
+            <article class="tile">
+                <div class="tile-icon full-reset"><i class="zmdi zmdi-male-female"></i></div>
+                <div class="tile-name all-tittles" style="width: 90%;">personal administrativo</div>
+                <?php
+                    $result = $planificacion->contar($administrativo);
+                    $row = $result->fetch_assoc();
+                ?>
+                <div class="tile-num full-reset"><?php echo $row['COUNT(*)'] ?></div>
+            </article>
         </section>
-
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -239,14 +198,5 @@
         </footer>
     </div>
 </body>
-
-<script>
-
-    function obtenerFecha(e)
-    {
-        var fecha = moment(e.value);
-        return fecha.format("YYYY/MM/DD HH:MM:SS")
-    }
-</script>
 
 </html>

@@ -18,6 +18,12 @@
 
     $accion="Aceptar";
     
+
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+
     //Aspirantes
     if(isset($_POST['accionAspirantes']) && ($_POST['accionAspirantes']=='Añadir'))
     {
@@ -105,10 +111,8 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                    
-                    <!--ASPIRANTES-->
                     <li>
                         <a href="./GestionAspirantes.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes Registro</a> 
                     </li>

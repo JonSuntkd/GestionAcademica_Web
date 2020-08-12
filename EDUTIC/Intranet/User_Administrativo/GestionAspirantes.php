@@ -16,6 +16,11 @@
     $calificacionAspirante="";
     
 
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../../index.php');
+    }
+
     $accion="Añadir";
     
     //Aspirantes
@@ -96,9 +101,8 @@
             </div>
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
-                    <li><a href="./userAdministrativo.html"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
+                <li><a href="./UsuarioAdministrativo.php"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp;
                             Inicio</a></li>
-                            <!--ASPIRANTES-->
                     <li>
                         <a href="./GestionAspirantes.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes Registro</a> 
                     </li>
@@ -230,7 +234,6 @@
                                     <option value="" disabled="" selected="">Selecciona un genero</option>
                                     <option value="MAS">Masculino</option>
                                     <option value="FEM">Femenino</option>
-                                    <option value="OTR">Otro</option>
                                 </select>
                             </div>
                             <div class="group-material">

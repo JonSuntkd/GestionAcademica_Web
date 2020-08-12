@@ -96,11 +96,9 @@
                     </li>
                     <!--ASPIRANTES-->
                     <li>
-                        <a href="./GestionAspirantes.html"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes</a> 
+                        <a href="./GestionAspirantes.php"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp;Aspirantes</a> 
                     </li>
-                    <li><a href="./reportAdministrativo.html"><i
-                        class="zmdi zmdi-trending-up zmdi-hc-fw"></i>&nbsp;&nbsp; Reportes y estadísticas</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>

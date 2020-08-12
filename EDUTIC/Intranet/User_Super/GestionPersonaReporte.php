@@ -64,15 +64,10 @@
                                     Gestion Estudiantes</a></li>
                         </ul>
                     </li>
-                    <li><a href="./GestionRol.php"><i class="zmdi zmdi-home zmdi-hc-fw">
-                            </i>&nbsp;&nbsp; Gestion de Roles</a></li>
                     <li><a href="./GestionPersonaReporte.php">
                             <i class="zmdi zmdi-trending-up zmdi-hc-fw">
                             </i>&nbsp;&nbsp; Reportes Personas</a></li>
-                    <li><a href="./GestionEstado.php">
-                            <i class="zmdi zmdi-account-add zmdi-hc-fw">
-                            </i>&nbsp;&nbsp; Gestion de Estado</a></li>
-
+                    
                 
                 </ul>
             </div>

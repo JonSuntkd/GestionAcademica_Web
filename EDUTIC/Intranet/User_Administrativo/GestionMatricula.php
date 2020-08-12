@@ -194,6 +194,7 @@
                 if(isset($_POST['accionMatricula'])&&isset($_POST['accionMatricula'])=='Aceptar')
                 {
             ?>
+                <form action="" method="post">
                     <div class="table-responsive">
                         <table id="tablaEstudiantesCalificaciones" class="table-striped table-bordered table-condensed" style="width: 100%;">
                                <thead class="text-center">
@@ -206,7 +207,7 @@
                                </thead>
                                <tbody>
                                     <?php
-                                    $matricula->listarAlumnosPorFechaIniFin($_POST['fecha_inicio'],$_POST['fecha_fin']);
+                                    $result = $matricula->listarAlumnosPorFechaIniFin($_POST['fecha_inicio'],$_POST['fecha_fin']);
                                         if($result->num_rows>0)
                                         {
                                             while($row = $result->fetch_assoc())
@@ -232,6 +233,7 @@
                                 </tbody> 
                             </table>
                         </div>
+                    
                         <div class="group-material col-xs-12 col-sm-8 col-sm-offset-2">
                                     <span style="color: #E34724;"><h2>Seleccione el periodo lectivo</h2></span> 
                                     <select class="form-control" name="periodo">
@@ -265,9 +267,7 @@
                     if(isset($_POST['accionMatriculaNueva'])&& ($_POST['accionMatriculaNueva']=='Hecho'))
                     {
                         $codigo_alumno = $_POST['cod_alumno'];
-                        //$notas = $_POST['notas'];
-                        foreach($codigo_alumno as $alumno)
-                        //foreach (array_combine($codigo_alumno, $notas) as $alumno => $notas) 
+                        foreach($codigo_alumno as $alumno) 
                         {
                             $matricula->matricularAlumnos($_POST['periodo'],$alumno,$_POST['nivel']);
                         }
